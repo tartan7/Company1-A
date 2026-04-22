@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ワークフロー設定 — UniteCube クライアントダッシュボード</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="app-layout">
+
+  <!-- ── サイドバーオーバーレイ（モバイル）── -->
+  <div class="sidebar-overlay" id="sidebarOverlay" aria-hidden="true"></div>
+
+  <!-- ── サイドバー ── -->
+  <nav class="sidebar" id="sidebar" aria-label="メインナビゲーション">
+    <a href="dashboard.html" class="sidebar-logo" aria-label="UniteCube トップページへ">
+      <div class="sidebar-logo-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/>
+        </svg>
+      </div>
+      <span class="sidebar-logo-text">UniteCube</span>
+    </a>
+
+    <div class="sidebar-nav">
+      <p class="nav-label">メニュー</p>
+      <a href="dashboard.html" class="nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="10"/>
+          <polyline points="12 6 12 12 16 14"/>
+        </svg>
+        <span>実行履歴</span>
+      </a>
+      <a href="workflows.html" class="nav-item active" aria-current="page">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="3"/>
+          <path d="M19.07 4.93a10 10 0 010 14.14M4.93 4.93a10 10 0 000 14.14"/>
+          <path d="M12 2v2M12 20v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M2 12h2M20 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+        </svg>
+        <span>ワークフロー設定</span>
+      </a>
+      <a href="support.html" class="nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>
+        </svg>
+        <span>サポートリクエスト</span>
+      </a>
+    </div>
+
+    <div class="sidebar-user">
+      <p class="sidebar-user-name">株式会社サンプル商事</p>
+      <a href="#" class="sidebar-user-logout" aria-label="ログアウト">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/>
+          <polyline points="16 17 21 12 16 7"/>
+          <line x1="21" y1="12" x2="9" y2="12"/>
+        </svg>
+        <span>ログアウト</span>
+      </a>
+    </div>
+  </nav>
+
+  <!-- ── メインコンテンツ ── -->
+  <div class="main-content">
+
+    <header class="header-bar">
+      <div class="header-left">
+        <button class="hamburger-btn" id="hamburgerBtn" aria-label="メニューを開く" aria-expanded="false" aria-controls="sidebar">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <line x1="3" y1="6" x2="21" y2="6"/>
+            <line x1="3" y1="12" x2="21" y2="12"/>
+            <line x1="3" y1="18" x2="21" y2="18"/>
+          </svg>
+        </button>
+        <h1 class="page-title">ワークフロー設定</h1>
+      </div>
+      <div class="header-right">
+        <span class="last-updated">最終更新: 2分前</span>
+      </div>
+    </header>
+
+    <main class="page-content" id="main-content">
+
+      <div class="workflow-grid" id="workflowGrid">
+
+        <!-- ワークフロー 1: 稼働中 -->
+        <article class="workflow-card" aria-labelledby="wf1-name">
+          <div class="workflow-card-header">
+            <div>
+              <h2 class="workflow-card-name" id="wf1-name">LINE 問い合わせ自動返信</h2>
+              <div class="workflow-card-meta">
+                <span class="badge badge-success" aria-label="ステータス：稼働中">稼働中</span>
+                <span class="workflow-card-last-run">最終実行: 3分前</span>
+              </div>
+            </div>
+            <!-- play icon -->
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--color-success)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="12" cy="12" r="10"/>
+              <polygon points="10 8 16 12 10 16 10 8"/>
+            </svg>
+          </div>
+          <p style="font-size:var(--font-size-sm);color:var(--color-neutral-500);margin-bottom:var(--spacing-4);">
+            LINE Messaging API Webhookで受信したメッセージをDify AIで処理し、自動返信します。
+          </p>
+          <div class="workflow-card-footer">
+            <button class="btn btn-warning btn-md" data-workflow-id="1" data-workflow-name="LINE 問い合わせ自動返信" data-action="pause" onclick="openModal(this)">
+              <!-- pause icon -->
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <circle cx="12" cy="12" r="10"/>
+                <line x1="10" y1="15" x2="10" y2="9"/>
+                <line x1="14" y1="15" x2="14" y2="9"/>
+              </svg>
+              一時停止
+            </button>
+          </div>
+        </article>
+
+        <!-- ワークフロー 2: 稼働中 -->
+        <article class="workflow-card" aria-labelledby="wf2-name">
+          <div class="workflow-card-header">
+            <div>
+              <h2 class="workflow-card-name" id="wf2-name">月次レポート自動生成</h2>
+              <div class="workflow-card-meta">
+                <span class="badge badge-success" aria-label="ステータス：稼働中">稼働中</span>
+                <span class="workflow-card-last-run">最終実行: 30分前</span>
+              </div>
+            </div>
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--color-success)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="12" cy="12" r="10"/>
+              <polygon points="10 8 16 12 10 16 10 8"/>
+            </svg>
+          </div>
+          <p style="font-size:var(--font-size-sm);color:var(--color-neutral-500);margin-bottom:var(--spacing-4);">
+            Googleスプレッドシートからデータを取得し、Excelレポートを生成してメール送信します。毎月1日に自動実行されます。
+          </p>
+          <div class="workflow-card-footer">
+            <button class="btn btn-warning btn-md" data-workflow-id="2" data-workflow-name="月次レポート自動生成" data-action="pause" onclick="openModal(this)">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <circle cx="12" cy="12" r="10"/>
+                <line x1="10" y1="15" x2="10" y2="9"/>
+                <line x1="14" y1="15" x2="14" y2="9"/>
+              </svg>
+              一時停止
+            </button>
+          </div>
+        </article>
+
+        <!-- ワークフロー 3: 稼働中 -->
+        <article class="workflow-card" aria-labelledby="wf3-name">
+          <div class="workflow-card-header">
+            <div>
+              <h2 class="workflow-card-name" id="wf3-name">Webフォーム問い合わせ処理</h2>
+              <div class="workflow-card-meta">
+                <span class="badge badge-success" aria-label="ステータス：稼働中">稼働中</span>
+                <span class="workflow-card-last-run">最終実行: 5時間前</span>
+              </div>
+            </div>
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--color-success)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="12" cy="12" r="10"/>
+              <polygon points="10 8 16 12 10 16 10 8"/>
+            </svg>
+          </div>
+          <p style="font-size:var(--font-size-sm);color:var(--color-neutral-500);margin-bottom:var(--spacing-4);">
+            WordPress Contact Form 7のWebhookを受信し、問い合わせを分類して自動返信メールを送信します。
+          </p>
+          <div class="workflow-card-footer">
+            <button class="btn btn-warning btn-md" data-workflow-id="3" data-workflow-name="Webフォーム問い合わせ処理" data-action="pause" onclick="openModal(this)">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <circle cx="12" cy="12" r="10"/>
+                <line x1="10" y1="15" x2="10" y2="9"/>
+                <line x1="14" y1="15" x2="14" y2="9"/>
+              </svg>
+              一時停止
+            </button>
+          </div>
+        </article>
+
+        <!-- ワークフロー 4: 停止中 -->
+        <article class="workflow-card" aria-labelledby="wf4-name">
+          <div class="workflow-card-header">
+            <div>
+              <h2 class="workflow-card-name" id="wf4-name">Googleスプレッドシート同期</h2>
+              <div class="workflow-card-meta">
+                <span class="badge badge-paused" aria-label="ステータス：停止中">停止中</span>
+                <span class="workflow-card-last-run">最終実行: 2日前</span>
+              </div>
+            </div>
+            <!-- pause icon -->
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--color-paused)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="12" cy="12" r="10"/>
+              <line x1="10" y1="15" x2="10" y2="9"/>
+              <line x1="14" y1="15" x2="14" y2="9"/>
+            </svg>
+          </div>
+          <p style="font-size:var(--font-size-sm);color:var(--color-neutral-500);margin-bottom:var(--spacing-4);">
+            顧客データをGoogleスプレッドシートと双方向同期します。認証エラーのため一時停止中です。
+          </p>
+          <div class="workflow-card-footer">
+            <button class="btn btn-success btn-md" data-workflow-id="4" data-workflow-name="Googleスプレッドシート同期" data-action="resume" onclick="openModal(this)">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <circle cx="12" cy="12" r="10"/>
+                <polygon points="10 8 16 12 10 16 10 8"/>
+              </svg>
+              再開
+            </button>
+          </div>
+        </article>
+
+      </div><!-- /.workflow-grid -->
+
+    </main>
+  </div><!-- /.main-content -->
+</div><!-- /.app-layout -->
+
+<!-- ── 確認モーダル ── -->
+<div class="modal-overlay" id="confirmModal" hidden role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <div class="modal" id="modalPanel">
+    <h2 class="modal-title" id="modalTitle">ワークフローを一時停止しますか？</h2>
+    <p class="modal-body" id="modalBody">
+      「LINE 問い合わせ自動返信」を一時停止します。停止中は自動処理が行われなくなります。
+    </p>
+    <div class="modal-actions">
+      <button class="btn btn-secondary btn-md" id="modalCancel" onclick="closeModal()">キャンセル</button>
+      <button class="btn btn-primary btn-md" id="modalConfirm" onclick="confirmAction()">確認</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── トースト通知コンテナ ── -->
+<div class="toast-container" id="toastContainer" aria-live="polite" aria-atomic="false"></div>
+
+<script>
+  // ── ハンバーガーメニュー ──
+  const hamburgerBtn = document.getElementById('hamburgerBtn');
+  const sidebar      = document.getElementById('sidebar');
+  const overlay      = document.getElementById('sidebarOverlay');
+
+  hamburgerBtn.addEventListener('click', () => {
+    const isOpen = sidebar.classList.contains('open');
+    sidebar.classList.toggle('open');
+    overlay.classList.toggle('open');
+    overlay.setAttribute('aria-hidden', isOpen ? 'true' : 'false');
+    hamburgerBtn.setAttribute('aria-expanded', isOpen ? 'false' : 'true');
+  });
+  overlay.addEventListener('click', () => {
+    sidebar.classList.remove('open');
+    overlay.classList.remove('open');
+    overlay.setAttribute('aria-hidden', 'true');
+    hamburgerBtn.setAttribute('aria-expanded', 'false');
+  });
+
+  // ── モーダル ──
+  let currentAction = null;
+  let currentWorkflowId = null;
+  let currentTriggerBtn = null;
+
+  const confirmModal  = document.getElementById('confirmModal');
+  const modalTitle    = document.getElementById('modalTitle');
+  const modalBody     = document.getElementById('modalBody');
+  const modalConfirm  = document.getElementById('modalConfirm');
+  // フォーカストラップ用
+  const focusableSelectors = 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
+
+  function openModal(triggerBtn) {
+    const action = triggerBtn.dataset.action;
+    const name   = triggerBtn.dataset.workflowName;
+    currentAction      = action;
+    currentWorkflowId  = triggerBtn.dataset.workflowId;
+    currentTriggerBtn  = triggerBtn;
+
+    if (action === 'pause') {
+      modalTitle.textContent   = 'ワークフローを一時停止しますか？';
+      modalBody.textContent    = `「${name}」を一時停止します。停止中は自動処理が行われなくなります。`;
+      modalConfirm.className   = 'btn btn-warning btn-md';
+      modalConfirm.textContent = '一時停止する';
+    } else {
+      modalTitle.textContent   = 'ワークフローを再開しますか？';
+      modalBody.textContent    = `「${name}」を再開します。設定された条件で自動処理を再開します。`;
+      modalConfirm.className   = 'btn btn-success btn-md';
+      modalConfirm.textContent = '再開する';
+    }
+
+    confirmModal.hidden = false;
+    document.body.style.overflow = 'hidden';
+
+    // フォーカストラップ: 最初のフォーカス可能な要素へ
+    const focusable = confirmModal.querySelectorAll(focusableSelectors);
+    if (focusable.length) focusable[0].focus();
+  }
+
+  function closeModal() {
+    confirmModal.hidden = true;
+    document.body.style.overflow = '';
+    if (currentTriggerBtn) currentTriggerBtn.focus();
+  }
+
+  function confirmAction() {
+    closeModal();
+
+    const card = document.querySelector(`[data-workflow-id="${currentWorkflowId}"]`).closest('.workflow-card');
+
+    if (currentAction === 'pause') {
+      // バッジをステータス変更
+      const badge = card.querySelector('.badge');
+      badge.className = 'badge badge-paused';
+      badge.textContent = '停止中';
+      badge.setAttribute('aria-label', 'ステータス：停止中');
+
+      // ヘッダーアイコン差し替え
+      card.querySelector('.workflow-card-header > svg').setAttribute('stroke', 'var(--color-paused)');
+
+      // ボタンを再開に
+      const btn = card.querySelector('button');
+      btn.className = 'btn btn-success btn-md';
+      btn.dataset.action = 'resume';
+      btn.onclick = () => openModal(btn);
+      btn.innerHTML = `
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="10"/>
+          <polygon points="10 8 16 12 10 16 10 8"/>
+        </svg>
+        再開`;
+
+      showToast('warning', 'ワークフローを一時停止しました', `「${btn.dataset.workflowName}」の自動処理を停止しました。`);
+    } else {
+      const badge = card.querySelector('.badge');
+      badge.className = 'badge badge-success';
+      badge.textContent = '稼働中';
+      badge.setAttribute('aria-label', 'ステータス：稼働中');
+
+      card.querySelector('.workflow-card-header > svg').setAttribute('stroke', 'var(--color-success)');
+
+      const btn = card.querySelector('button');
+      btn.className = 'btn btn-warning btn-md';
+      btn.dataset.action = 'pause';
+      btn.onclick = () => openModal(btn);
+      btn.innerHTML = `
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="10"/>
+          <line x1="10" y1="15" x2="10" y2="9"/>
+          <line x1="14" y1="15" x2="14" y2="9"/>
+        </svg>
+        一時停止`;
+
+      showToast('success', 'ワークフローを再開しました', `「${btn.dataset.workflowName}」の自動処理を再開しました。`);
+    }
+  }
+
+  // Escキーでモーダルを閉じる
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && !confirmModal.hidden) closeModal();
+  });
+
+  // オーバーレイクリックで閉じる
+  confirmModal.addEventListener('click', (e) => {
+    if (e.target === confirmModal) closeModal();
+  });
+
+  // フォーカストラップ
+  confirmModal.addEventListener('keydown', (e) => {
+    if (e.key !== 'Tab') return;
+    const focusable = Array.from(confirmModal.querySelectorAll(focusableSelectors));
+    const first = focusable[0];
+    const last  = focusable[focusable.length - 1];
+    if (e.shiftKey) {
+      if (document.activeElement === first) { e.preventDefault(); last.focus(); }
+    } else {
+      if (document.activeElement === last) { e.preventDefault(); first.focus(); }
+    }
+  });
+
+  // ── トースト ──
+  function showToast(type, title, text) {
+    const container = document.getElementById('toastContainer');
+    const icons = {
+      success: '<svg class="toast-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>',
+      warning: '<svg class="toast-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>',
+      error:   '<svg class="toast-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>',
+    };
+
+    // 最大3件
+    const existing = container.querySelectorAll('.toast');
+    if (existing.length >= 3) existing[0].remove();
+
+    const toast = document.createElement('div');
+    toast.className = `toast toast-${type}`;
+    toast.setAttribute('role', 'alert');
+    toast.innerHTML = `
+      ${icons[type] || ''}
+      <div class="toast-body">
+        <div class="toast-title">${title}</div>
+        ${text ? `<div class="toast-text">${text}</div>` : ''}
+      </div>
+      <button class="toast-close" aria-label="通知を閉じる">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>`;
+
+    toast.querySelector('.toast-close').addEventListener('click', () => removeToast(toast));
+    container.appendChild(toast);
+
+    const duration = type === 'error' ? 6000 : 3000;
+    setTimeout(() => removeToast(toast), duration);
+  }
+
+  function removeToast(toast) {
+    toast.style.transition = 'opacity 200ms ease, transform 200ms ease';
+    toast.style.opacity = '0';
+    toast.style.transform = 'translateX(100%)';
+    setTimeout(() => toast.remove(), 200);
+  }
+</script>
+</body>
+</html>

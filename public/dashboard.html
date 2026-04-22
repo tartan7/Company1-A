@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>実行履歴 — UniteCube クライアントダッシュボード</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="app-layout">
+
+  <!-- ── サイドバーオーバーレイ（モバイル）── -->
+  <div class="sidebar-overlay" id="sidebarOverlay" aria-hidden="true"></div>
+
+  <!-- ── サイドバー ── -->
+  <nav class="sidebar" id="sidebar" aria-label="メインナビゲーション">
+    <a href="dashboard.html" class="sidebar-logo" aria-label="UniteCube トップページへ">
+      <div class="sidebar-logo-icon" aria-hidden="true">
+        <!-- cube icon -->
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/>
+        </svg>
+      </div>
+      <span class="sidebar-logo-text">UniteCube</span>
+    </a>
+
+    <div class="sidebar-nav">
+      <p class="nav-label">メニュー</p>
+      <a href="dashboard.html" class="nav-item active" aria-current="page">
+        <!-- clock icon -->
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="10"/>
+          <polyline points="12 6 12 12 16 14"/>
+        </svg>
+        <span>実行履歴</span>
+      </a>
+      <a href="workflows.html" class="nav-item">
+        <!-- cog icon -->
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="3"/>
+          <path d="M19.07 4.93a10 10 0 010 14.14M4.93 4.93a10 10 0 000 14.14"/>
+          <path d="M12 2v2M12 20v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M2 12h2M20 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+        </svg>
+        <span>ワークフロー設定</span>
+      </a>
+      <a href="support.html" class="nav-item">
+        <!-- chat icon -->
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>
+        </svg>
+        <span>サポートリクエスト</span>
+      </a>
+    </div>
+
+    <div class="sidebar-user">
+      <p class="sidebar-user-name">株式会社サンプル商事</p>
+      <a href="#" class="sidebar-user-logout" aria-label="ログアウト">
+        <!-- logout icon -->
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/>
+          <polyline points="16 17 21 12 16 7"/>
+          <line x1="21" y1="12" x2="9" y2="12"/>
+        </svg>
+        <span>ログアウト</span>
+      </a>
+    </div>
+  </nav>
+
+  <!-- ── メインコンテンツ ── -->
+  <div class="main-content">
+
+    <!-- ヘッダーバー -->
+    <header class="header-bar">
+      <div class="header-left">
+        <button class="hamburger-btn" id="hamburgerBtn" aria-label="メニューを開く" aria-expanded="false" aria-controls="sidebar">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <line x1="3" y1="6" x2="21" y2="6"/>
+            <line x1="3" y1="12" x2="21" y2="12"/>
+            <line x1="3" y1="18" x2="21" y2="18"/>
+          </svg>
+        </button>
+        <h1 class="page-title">実行履歴</h1>
+      </div>
+      <div class="header-right">
+        <span class="last-updated" id="lastUpdated" aria-live="polite">最終更新: 2分前</span>
+        <button class="btn btn-secondary btn-sm" id="refreshBtn" aria-label="データを更新">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="23 4 23 10 17 10"/>
+            <path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/>
+          </svg>
+          更新
+        </button>
+      </div>
+    </header>
+
+    <!-- ページコンテンツ -->
+    <main class="page-content" id="main-content">
+
+      <!-- 統計カード -->
+      <section aria-labelledby="stats-heading">
+        <h2 id="stats-heading" class="visually-hidden">サマリー統計</h2>
+        <div class="stats-grid">
+
+          <div class="stat-card">
+            <div class="stat-card-header">
+              <span class="stat-card-label">総実行数（直近7日間）</span>
+              <div class="stat-card-icon stat-card-icon-blue" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+                </svg>
+              </div>
+            </div>
+            <div class="stat-card-value">142</div>
+            <div class="stat-card-sub positive">前週比 +12%</div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-card-header">
+              <span class="stat-card-label">成功率</span>
+              <div class="stat-card-icon stat-card-icon-green" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M22 11.08V12a10 10 0 11-5.93-9.14"/>
+                  <polyline points="22 4 12 14.01 9 11.01"/>
+                </svg>
+              </div>
+            </div>
+            <div class="stat-card-value">94.4%</div>
+            <div class="stat-card-sub">134件成功 / 8件失敗</div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-card-header">
+              <span class="stat-card-label">失敗件数</span>
+              <div class="stat-card-icon stat-card-icon-red" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="10"/>
+                  <line x1="15" y1="9" x2="9" y2="15"/>
+                  <line x1="9" y1="9" x2="15" y2="15"/>
+                </svg>
+              </div>
+            </div>
+            <div class="stat-card-value">8</div>
+            <div class="stat-card-sub negative">前週比 +2件</div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-card-header">
+              <span class="stat-card-label">稼働ステータス</span>
+              <div class="stat-card-icon stat-card-icon-green" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M22 11.08V12a10 10 0 11-5.93-9.14"/>
+                  <polyline points="22 4 12 14.01 9 11.01"/>
+                </svg>
+              </div>
+            </div>
+            <div class="stat-card-value">稼働中</div>
+            <div class="stat-card-sub">3ワークフロー 有効</div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- 実行履歴テーブル -->
+      <section aria-labelledby="log-heading">
+        <div class="card">
+          <div class="card-header">
+            <h2 id="log-heading" class="section-title" style="margin-bottom:0;">実行ログ</h2>
+            <div style="display:flex;gap:var(--spacing-3);align-items:center;">
+              <label for="statusFilter" class="visually-hidden">ステータスで絞り込み</label>
+              <div class="form-select-wrapper" style="min-width:160px;">
+                <select class="form-input" id="statusFilter" style="padding:6px 36px 6px 12px;min-height:36px;font-size:var(--font-size-sm);">
+                  <option value="">すべてのステータス</option>
+                  <option value="success">成功</option>
+                  <option value="error">失敗</option>
+                  <option value="warning">警告</option>
+                  <option value="running">実行中</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="table-wrapper">
+            <table class="data-table" aria-label="実行履歴テーブル">
+              <thead>
+                <tr>
+                  <th scope="col">実行日時</th>
+                  <th scope="col">ワークフロー名</th>
+                  <th scope="col">ステータス</th>
+                  <th scope="col">所要時間</th>
+                  <th scope="col"><span class="visually-hidden">詳細</span></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="col-datetime">2026/04/22 19:45</td>
+                  <td class="col-workflow">LINE 問い合わせ自動返信</td>
+                  <td><span class="badge badge-success" aria-label="ステータス：成功">成功</span></td>
+                  <td class="col-duration">1.2秒</td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td class="col-datetime">2026/04/22 19:30</td>
+                  <td class="col-workflow">月次レポート生成</td>
+                  <td><span class="badge badge-success" aria-label="ステータス：成功">成功</span></td>
+                  <td class="col-duration">8.4秒</td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td class="col-datetime">2026/04/22 18:55</td>
+                  <td class="col-workflow">Google スプレッドシート同期</td>
+                  <td><span class="badge badge-error" aria-label="ステータス：失敗">失敗</span></td>
+                  <td class="col-duration">2.1秒</td>
+                  <td><a href="#" class="detail-link">
+                    詳細
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
+                  </a></td>
+                </tr>
+                <tr>
+                  <td class="col-datetime">2026/04/22 18:30</td>
+                  <td class="col-workflow">LINE 問い合わせ自動返信</td>
+                  <td><span class="badge badge-success" aria-label="ステータス：成功">成功</span></td>
+                  <td class="col-duration">0.9秒</td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td class="col-datetime">2026/04/22 17:00</td>
+                  <td class="col-workflow">Webフォーム問い合わせ処理</td>
+                  <td><span class="badge badge-warning" aria-label="ステータス：警告">警告</span></td>
+                  <td class="col-duration">3.7秒</td>
+                  <td><a href="#" class="detail-link">
+                    詳細
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
+                  </a></td>
+                </tr>
+                <tr>
+                  <td class="col-datetime">2026/04/22 16:45</td>
+                  <td class="col-workflow">LINE 問い合わせ自動返信</td>
+                  <td><span class="badge badge-success" aria-label="ステータス：成功">成功</span></td>
+                  <td class="col-duration">1.1秒</td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td class="col-datetime">2026/04/22 15:20</td>
+                  <td class="col-workflow">月次レポート生成</td>
+                  <td><span class="badge badge-running" aria-label="ステータス：実行中">実行中</span></td>
+                  <td class="col-duration">—</td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td class="col-datetime">2026/04/22 14:00</td>
+                  <td class="col-workflow">Google スプレッドシート同期</td>
+                  <td><span class="badge badge-success" aria-label="ステータス：成功">成功</span></td>
+                  <td class="col-duration">4.2秒</td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td class="col-datetime">2026/04/22 12:30</td>
+                  <td class="col-workflow">Webフォーム問い合わせ処理</td>
+                  <td><span class="badge badge-success" aria-label="ステータス：成功">成功</span></td>
+                  <td class="col-duration">2.8秒</td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td class="col-datetime">2026/04/22 10:15</td>
+                  <td class="col-workflow">LINE 問い合わせ自動返信</td>
+                  <td><span class="badge badge-error" aria-label="ステータス：失敗">失敗</span></td>
+                  <td class="col-duration">0.3秒</td>
+                  <td><a href="#" class="detail-link">
+                    詳細
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
+                  </a></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- ページネーション -->
+          <nav class="pagination" aria-label="ページネーション">
+            <a href="#" class="pagination-btn" aria-label="前のページ" aria-disabled="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>
+            </a>
+            <a href="#" class="pagination-btn active" aria-label="1ページ目（現在のページ）" aria-current="page">1</a>
+            <a href="#" class="pagination-btn" aria-label="2ページ目">2</a>
+            <a href="#" class="pagination-btn" aria-label="3ページ目">3</a>
+            <a href="#" class="pagination-btn" aria-label="次のページ">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
+            </a>
+          </nav>
+        </div>
+      </section>
+
+    </main>
+  </div><!-- /.main-content -->
+</div><!-- /.app-layout -->
+
+<!-- ── トースト通知コンテナ ── -->
+<div class="toast-container" id="toastContainer" aria-live="polite" aria-atomic="false"></div>
+
+<script>
+  // ── ハンバーガーメニュー ──
+  const hamburgerBtn = document.getElementById('hamburgerBtn');
+  const sidebar      = document.getElementById('sidebar');
+  const overlay      = document.getElementById('sidebarOverlay');
+
+  function openSidebar() {
+    sidebar.classList.add('open');
+    overlay.classList.add('open');
+    overlay.setAttribute('aria-hidden', 'false');
+    hamburgerBtn.setAttribute('aria-expanded', 'true');
+  }
+
+  function closeSidebar() {
+    sidebar.classList.remove('open');
+    overlay.classList.remove('open');
+    overlay.setAttribute('aria-hidden', 'true');
+    hamburgerBtn.setAttribute('aria-expanded', 'false');
+  }
+
+  hamburgerBtn.addEventListener('click', () => {
+    if (sidebar.classList.contains('open')) {
+      closeSidebar();
+    } else {
+      openSidebar();
+    }
+  });
+
+  overlay.addEventListener('click', closeSidebar);
+
+  // ── 更新ボタン ──
+  document.getElementById('refreshBtn').addEventListener('click', function() {
+    showToast('success', 'データを更新しました', '実行ログが最新の状態になりました');
+    document.getElementById('lastUpdated').textContent = '最終更新: たった今';
+  });
+
+  // ── トースト ──
+  function showToast(type, title, text) {
+    const container = document.getElementById('toastContainer');
+    const icons = {
+      success: '<svg class="toast-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>',
+      error:   '<svg class="toast-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>',
+      warning: '<svg class="toast-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>',
+    };
+    const toast = document.createElement('div');
+    toast.className = `toast toast-${type}`;
+    toast.setAttribute('role', 'alert');
+    toast.innerHTML = `
+      ${icons[type] || ''}
+      <div class="toast-body">
+        <div class="toast-title">${title}</div>
+        ${text ? `<div class="toast-text">${text}</div>` : ''}
+      </div>
+      <button class="toast-close" aria-label="通知を閉じる">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>`;
+
+    toast.querySelector('.toast-close').addEventListener('click', () => removeToast(toast));
+    container.appendChild(toast);
+
+    const duration = type === 'error' ? 6000 : 3000;
+    setTimeout(() => removeToast(toast), duration);
+  }
+
+  function removeToast(toast) {
+    toast.style.transition = 'opacity 200ms ease, transform 200ms ease';
+    toast.style.opacity = '0';
+    toast.style.transform = 'translateX(100%)';
+    setTimeout(() => toast.remove(), 200);
+  }
+</script>
+</body>
+</html>

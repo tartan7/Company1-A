@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>サポートリクエスト — UniteCube クライアントダッシュボード</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="app-layout">
+
+  <!-- ── サイドバーオーバーレイ（モバイル）── -->
+  <div class="sidebar-overlay" id="sidebarOverlay" aria-hidden="true"></div>
+
+  <!-- ── サイドバー ── -->
+  <nav class="sidebar" id="sidebar" aria-label="メインナビゲーション">
+    <a href="dashboard.html" class="sidebar-logo" aria-label="UniteCube トップページへ">
+      <div class="sidebar-logo-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/>
+        </svg>
+      </div>
+      <span class="sidebar-logo-text">UniteCube</span>
+    </a>
+
+    <div class="sidebar-nav">
+      <p class="nav-label">メニュー</p>
+      <a href="dashboard.html" class="nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="10"/>
+          <polyline points="12 6 12 12 16 14"/>
+        </svg>
+        <span>実行履歴</span>
+      </a>
+      <a href="workflows.html" class="nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="3"/>
+          <path d="M19.07 4.93a10 10 0 010 14.14M4.93 4.93a10 10 0 000 14.14"/>
+          <path d="M12 2v2M12 20v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M2 12h2M20 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+        </svg>
+        <span>ワークフロー設定</span>
+      </a>
+      <a href="support.html" class="nav-item active" aria-current="page">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>
+        </svg>
+        <span>サポートリクエスト</span>
+      </a>
+    </div>
+
+    <div class="sidebar-user">
+      <p class="sidebar-user-name">株式会社サンプル商事</p>
+      <a href="#" class="sidebar-user-logout" aria-label="ログアウト">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/>
+          <polyline points="16 17 21 12 16 7"/>
+          <line x1="21" y1="12" x2="9" y2="12"/>
+        </svg>
+        <span>ログアウト</span>
+      </a>
+    </div>
+  </nav>
+
+  <!-- ── メインコンテンツ ── -->
+  <div class="main-content">
+
+    <header class="header-bar">
+      <div class="header-left">
+        <button class="hamburger-btn" id="hamburgerBtn" aria-label="メニューを開く" aria-expanded="false" aria-controls="sidebar">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <line x1="3" y1="6" x2="21" y2="6"/>
+            <line x1="3" y1="12" x2="21" y2="12"/>
+            <line x1="3" y1="18" x2="21" y2="18"/>
+          </svg>
+        </button>
+        <h1 class="page-title">サポートリクエスト</h1>
+      </div>
+      <div class="header-right">
+        <span class="last-updated">対応時間: 平日 9:00〜18:00</span>
+      </div>
+    </header>
+
+    <main class="page-content" id="main-content">
+      <div class="two-col-layout">
+
+        <!-- 左カラム: 新規フォーム -->
+        <section aria-labelledby="form-heading">
+          <div class="card">
+            <div class="card-header">
+              <h2 id="form-heading" class="section-title" style="margin-bottom:0;">新規リクエスト</h2>
+            </div>
+            <div class="card-body">
+              <form id="supportForm" novalidate>
+
+                <!-- 件名 -->
+                <div class="form-group">
+                  <label class="form-label" for="subject">
+                    件名<span class="required" aria-hidden="true">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    id="subject"
+                    name="subject"
+                    class="form-input"
+                    placeholder="例：LINE返信が届かなくなりました"
+                    maxlength="100"
+                    required
+                    aria-required="true"
+                    aria-describedby="subject-counter subject-error"
+                  >
+                  <div style="display:flex;justify-content:space-between;align-items:center;">
+                    <span class="form-error hidden" id="subject-error" role="alert">件名を入力してください。</span>
+                    <span class="char-counter" id="subject-counter" aria-live="polite">0 / 100</span>
+                  </div>
+                </div>
+
+                <!-- カテゴリ -->
+                <div class="form-group">
+                  <label class="form-label" for="category">
+                    カテゴリ<span class="required" aria-hidden="true">*</span>
+                  </label>
+                  <div class="form-select-wrapper">
+                    <select
+                      id="category"
+                      name="category"
+                      class="form-select"
+                      required
+                      aria-required="true"
+                      aria-describedby="category-error"
+                    >
+                      <option value="">選択してください</option>
+                      <option value="change">変更依頼</option>
+                      <option value="error">エラー報告</option>
+                      <option value="other">その他</option>
+                    </select>
+                  </div>
+                  <span class="form-error hidden" id="category-error" role="alert">カテゴリを選択してください。</span>
+                </div>
+
+                <!-- 詳細 -->
+                <div class="form-group">
+                  <label class="form-label" for="details">
+                    詳細<span class="required" aria-hidden="true">*</span>
+                  </label>
+                  <textarea
+                    id="details"
+                    name="details"
+                    class="form-textarea"
+                    rows="5"
+                    placeholder="問題の内容や状況を詳しく記入してください。いつ頃から発生したか、再現手順なども記載いただくと対応が早くなります。"
+                    maxlength="1000"
+                    required
+                    aria-required="true"
+                    aria-describedby="details-counter details-error"
+                  ></textarea>
+                  <div style="display:flex;justify-content:space-between;align-items:center;">
+                    <span class="form-error hidden" id="details-error" role="alert">詳細を入力してください。</span>
+                    <span class="char-counter" id="details-counter" aria-live="polite">0 / 1000</span>
+                  </div>
+                </div>
+
+                <!-- 添付ファイル -->
+                <div class="form-group">
+                  <label class="form-label" for="attachment">
+                    添付ファイル
+                    <span style="font-weight:var(--font-weight-normal);color:var(--color-neutral-500);">（任意）</span>
+                  </label>
+                  <div class="file-input-wrapper">
+                    <label class="file-input-label" for="attachment">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
+                        <polyline points="17 8 12 3 7 8"/>
+                        <line x1="12" y1="3" x2="12" y2="15"/>
+                      </svg>
+                      <span id="file-label-text">
+                        <strong>クリックしてファイルを選択</strong>、またはここにドラッグ＆ドロップ
+                      </span>
+                    </label>
+                    <input
+                      type="file"
+                      id="attachment"
+                      name="attachment"
+                      accept="image/*,.pdf"
+                      aria-describedby="attachment-hint attachment-error"
+                    >
+                  </div>
+                  <p class="form-hint" id="attachment-hint">対応形式: 画像（JPG・PNG・GIF）・PDF / 最大ファイルサイズ: 5MB</p>
+                  <span class="form-error hidden" id="attachment-error" role="alert"></span>
+                </div>
+
+                <!-- 送信ボタン -->
+                <div style="display:flex;justify-content:flex-end;margin-top:var(--spacing-6);">
+                  <button type="submit" class="btn btn-primary btn-md" id="submitBtn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <line x1="22" y1="2" x2="11" y2="13"/>
+                      <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+                    </svg>
+                    送信する
+                  </button>
+                </div>
+
+                <!-- インライン成功メッセージ -->
+                <div class="inline-success hidden" id="successMessage" role="status" aria-live="polite">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M22 11.08V12a10 10 0 11-5.93-9.14"/>
+                    <polyline points="22 4 12 14.01 9 11.01"/>
+                  </svg>
+                  <div class="inline-success-content">
+                    <div class="inline-success-title">送信が完了しました</div>
+                    <div class="inline-success-text">
+                      リクエストを受け付けました。通常1〜2営業日以内にメールでご連絡いたします。
+                    </div>
+                  </div>
+                </div>
+
+              </form>
+            </div>
+          </div>
+        </section>
+
+        <!-- 右カラム: 送信済み一覧 -->
+        <section aria-labelledby="history-heading">
+          <div class="card">
+            <div class="card-header">
+              <h2 id="history-heading" class="section-title" style="margin-bottom:0;">送信済みリクエスト</h2>
+              <span style="font-size:var(--font-size-sm);color:var(--color-neutral-500);" id="ticket-count">3件</span>
+            </div>
+
+            <div class="ticket-list" id="ticketList">
+
+              <div class="ticket-item" role="button" tabindex="0" aria-label="チケット詳細を開く: Googleスプレッドシート連携でエラーが発生しています">
+                <div class="ticket-item-header">
+                  <span class="ticket-item-subject">Googleスプレッドシート連携でエラーが発生しています</span>
+                  <span class="badge badge-error" aria-label="ステータス：未対応">未対応</span>
+                </div>
+                <div style="display:flex;align-items:center;justify-content:space-between;">
+                  <span style="font-size:var(--font-size-xs);padding:2px 6px;background-color:var(--color-error-bg);color:var(--color-error);border-radius:var(--radius-sm);">エラー報告</span>
+                  <span class="ticket-item-meta">2026/04/21</span>
+                </div>
+              </div>
+
+              <div class="ticket-item" role="button" tabindex="0" aria-label="チケット詳細を開く: LINE返信のメッセージ文言を変更したい">
+                <div class="ticket-item-header">
+                  <span class="ticket-item-subject">LINE返信のメッセージ文言を変更したい</span>
+                  <span class="badge badge-warning" aria-label="ステータス：対応中">対応中</span>
+                </div>
+                <div style="display:flex;align-items:center;justify-content:space-between;">
+                  <span style="font-size:var(--font-size-xs);padding:2px 6px;background-color:var(--color-warning-bg);color:var(--color-warning);border-radius:var(--radius-sm);">変更依頼</span>
+                  <span class="ticket-item-meta">2026/04/15</span>
+                </div>
+              </div>
+
+              <div class="ticket-item" role="button" tabindex="0" aria-label="チケット詳細を開く: 月次レポートの送信先メールアドレスを追加したい">
+                <div class="ticket-item-header">
+                  <span class="ticket-item-subject">月次レポートの送信先メールアドレスを追加したい</span>
+                  <span class="badge badge-success" aria-label="ステータス：解決済み">解決済み</span>
+                </div>
+                <div style="display:flex;align-items:center;justify-content:space-between;">
+                  <span style="font-size:var(--font-size-xs);padding:2px 6px;background-color:var(--color-neutral-100);color:var(--color-neutral-700);border-radius:var(--radius-sm);">変更依頼</span>
+                  <span class="ticket-item-meta">2026/04/05</span>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- 空状態（チケットなし時にJS切り替え） -->
+            <div class="empty-state hidden" id="emptyTickets">
+              <svg class="empty-state-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>
+              </svg>
+              <p class="empty-state-title">リクエストはまだありません</p>
+              <p class="empty-state-text">左のフォームから最初のサポートリクエストを送信してください。</p>
+            </div>
+          </div>
+        </section>
+
+      </div><!-- /.two-col-layout -->
+    </main>
+  </div><!-- /.main-content -->
+</div><!-- /.app-layout -->
+
+<!-- ── トースト通知コンテナ ── -->
+<div class="toast-container" id="toastContainer" aria-live="polite" aria-atomic="false"></div>
+
+<script>
+  // ── ハンバーガーメニュー ──
+  const hamburgerBtn = document.getElementById('hamburgerBtn');
+  const sidebar      = document.getElementById('sidebar');
+  const overlay      = document.getElementById('sidebarOverlay');
+
+  hamburgerBtn.addEventListener('click', () => {
+    const isOpen = sidebar.classList.contains('open');
+    sidebar.classList.toggle('open');
+    overlay.classList.toggle('open');
+    overlay.setAttribute('aria-hidden', isOpen ? 'true' : 'false');
+    hamburgerBtn.setAttribute('aria-expanded', isOpen ? 'false' : 'true');
+  });
+  overlay.addEventListener('click', () => {
+    sidebar.classList.remove('open');
+    overlay.classList.remove('open');
+    overlay.setAttribute('aria-hidden', 'true');
+    hamburgerBtn.setAttribute('aria-expanded', 'false');
+  });
+
+  // ── 文字数カウンター ──
+  function setupCharCounter(inputId, counterId, max) {
+    const input   = document.getElementById(inputId);
+    const counter = document.getElementById(counterId);
+    input.addEventListener('input', () => {
+      const len = input.value.length;
+      counter.textContent = `${len} / ${max}`;
+      counter.style.color = len > max * 0.9 ? 'var(--color-warning)' : '';
+    });
+  }
+  setupCharCounter('subject', 'subject-counter', 100);
+  setupCharCounter('details', 'details-counter', 1000);
+
+  // ── ファイル選択 ──
+  document.getElementById('attachment').addEventListener('change', function() {
+    const file = this.files[0];
+    const label = document.getElementById('file-label-text');
+    const errorEl = document.getElementById('attachment-error');
+
+    if (!file) {
+      label.innerHTML = '<strong>クリックしてファイルを選択</strong>、またはここにドラッグ＆ドロップ';
+      return;
+    }
+    if (file.size > 5 * 1024 * 1024) {
+      errorEl.textContent = 'ファイルサイズが5MBを超えています。';
+      errorEl.classList.remove('hidden');
+      this.value = '';
+      return;
+    }
+    errorEl.classList.add('hidden');
+    label.innerHTML = `<strong>${file.name}</strong>（${(file.size / 1024).toFixed(0)} KB）`;
+  });
+
+  // ── フォーム送信 ──
+  document.getElementById('supportForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    const subject  = document.getElementById('subject');
+    const category = document.getElementById('category');
+    const details  = document.getElementById('details');
+    let valid = true;
+
+    // バリデーション
+    [
+      { el: subject,  errorId: 'subject-error',  msg: '件名を入力してください。' },
+      { el: category, errorId: 'category-error', msg: 'カテゴリを選択してください。' },
+      { el: details,  errorId: 'details-error',  msg: '詳細を入力してください。' },
+    ].forEach(({ el, errorId, msg }) => {
+      const errorEl = document.getElementById(errorId);
+      if (!el.value.trim()) {
+        el.classList.add('error');
+        errorEl.textContent = msg;
+        errorEl.classList.remove('hidden');
+        valid = false;
+      } else {
+        el.classList.remove('error');
+        errorEl.classList.add('hidden');
+      }
+    });
+
+    if (!valid) return;
+
+    // 送信処理（プロトタイプ）
+    const submitBtn = document.getElementById('submitBtn');
+    submitBtn.disabled = true;
+    submitBtn.textContent = '送信中...';
+
+    setTimeout(() => {
+      // 成功メッセージ表示
+      document.getElementById('successMessage').classList.remove('hidden');
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = `
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+        送信する`;
+
+      // 送信済みリストに追加
+      addTicketToList(subject.value, category.value);
+
+      // フォームリセット
+      this.reset();
+      document.getElementById('subject-counter').textContent = '0 / 100';
+      document.getElementById('details-counter').textContent = '0 / 1000';
+      document.getElementById('file-label-text').innerHTML = '<strong>クリックしてファイルを選択</strong>、またはここにドラッグ＆ドロップ';
+
+      // 3秒後に成功メッセージを非表示
+      setTimeout(() => {
+        document.getElementById('successMessage').classList.add('hidden');
+      }, 6000);
+    }, 800);
+  });
+
+  const categoryLabels = {
+    change: { label: '変更依頼', bg: 'var(--color-neutral-100)', color: 'var(--color-neutral-700)' },
+    error:  { label: 'エラー報告', bg: 'var(--color-error-bg)', color: 'var(--color-error)' },
+    other:  { label: 'その他', bg: 'var(--color-neutral-100)', color: 'var(--color-neutral-700)' },
+  };
+
+  function addTicketToList(subject, category) {
+    const ticketList = document.getElementById('ticketList');
+    const countEl    = document.getElementById('ticket-count');
+
+    const now = new Date();
+    const dateStr = `${now.getFullYear()}/${String(now.getMonth()+1).padStart(2,'0')}/${String(now.getDate()).padStart(2,'0')}`;
+    const cat = categoryLabels[category] || categoryLabels.other;
+    const subjectEscaped = subject.replace(/[<>&"]/g, c => ({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;'}[c]));
+
+    const item = document.createElement('div');
+    item.className = 'ticket-item';
+    item.setAttribute('role', 'button');
+    item.setAttribute('tabindex', '0');
+    item.setAttribute('aria-label', `チケット詳細を開く: ${subjectEscaped}`);
+    item.innerHTML = `
+      <div class="ticket-item-header">
+        <span class="ticket-item-subject">${subjectEscaped}</span>
+        <span class="badge badge-warning" aria-label="ステータス：対応中">対応中</span>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;">
+        <span style="font-size:var(--font-size-xs);padding:2px 6px;background-color:${cat.bg};color:${cat.color};border-radius:var(--radius-sm);">${cat.label}</span>
+        <span class="ticket-item-meta">${dateStr}</span>
+      </div>`;
+
+    // リストの先頭に挿入
+    ticketList.insertBefore(item, ticketList.firstChild);
+
+    // 件数更新
+    const current = parseInt(countEl.textContent) || 0;
+    countEl.textContent = `${current + 1}件`;
+
+    // 空状態を非表示
+    document.getElementById('emptyTickets').classList.add('hidden');
+    ticketList.classList.remove('hidden');
+  }
+
+  // ── トースト ──
+  function showToast(type, title, text) {
+    const container = document.getElementById('toastContainer');
+    const icons = {
+      success: '<svg class="toast-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>',
+      error:   '<svg class="toast-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>',
+      warning: '<svg class="toast-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>',
+    };
+    const toast = document.createElement('div');
+    toast.className = `toast toast-${type}`;
+    toast.setAttribute('role', 'alert');
+    toast.innerHTML = `
+      ${icons[type] || ''}
+      <div class="toast-body">
+        <div class="toast-title">${title}</div>
+        ${text ? `<div class="toast-text">${text}</div>` : ''}
+      </div>
+      <button class="toast-close" aria-label="通知を閉じる">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>`;
+
+    toast.querySelector('.toast-close').addEventListener('click', () => removeToast(toast));
+    container.appendChild(toast);
+    setTimeout(() => removeToast(toast), type === 'error' ? 6000 : 3000);
+  }
+
+  function removeToast(toast) {
+    toast.style.transition = 'opacity 200ms ease, transform 200ms ease';
+    toast.style.opacity = '0';
+    toast.style.transform = 'translateX(100%)';
+    setTimeout(() => toast.remove(), 200);
+  }
+</script>
+</body>
+</html>
