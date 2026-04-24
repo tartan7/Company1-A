@@ -64,6 +64,11 @@ jobs:
           PROD_PORT: ${{ secrets.PROD_PORT || 22 }}
         run: |
           set -euo pipefail
+          ssh -v -p "$PROD_PORT" \
+            -i "$HOME/.ssh/id_unitecube_prod" \
+            -o IdentitiesOnly=yes \
+            -o StrictHostKeyChecking=yes \
+            "$PROD_USER@$PROD_HOST" "id && echo ssh_connected"
           tar -C public -czf /tmp/unitecube-release.tar.gz .
           scp -P "$PROD_PORT" \
             -i "$HOME/.ssh/id_unitecube_prod" \
