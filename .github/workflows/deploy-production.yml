@@ -23,6 +23,25 @@ jobs:
       - name: Validate deploy script
         run: test -x scripts/deploy-prod.sh
 
+      - name: Validate SSH host fingerprint secret
+        env:
+          PROD_HOST: ${{ secrets.PROD_HOST }}
+          PROD_PORT: ${{ secrets.PROD_PORT || 22 }}
+          PROD_SSH_FINGERPRINT: ${{ secrets.PROD_SSH_FINGERPRINT }}
+        run: |
+          set -euo pipefail
+          scan="$(ssh-keyscan -p "$PROD_PORT" -t ed25519 "$PROD_HOST" 2>/dev/null || true)"
+          if [ -z "$scan" ]; then
+            echo "::error::Unable to scan ed25519 host key from production target."
+            exit 1
+          fi
+          actual="$(printf '%s\n' "$scan" | ssh-keygen -E sha256 -lf - | awk 'NR==1 {print $2}')"
+          echo "Computed SSH fingerprint: $actual"
+          if [ "$actual" != "$PROD_SSH_FINGERPRINT" ]; then
+            echo "::error::PROD_SSH_FINGERPRINT mismatch. Update secret to: $actual"
+            exit 1
+          fi
+
       - name: Upload site bundle
         uses: appleboy/scp-action@v0.1.7
         with:
