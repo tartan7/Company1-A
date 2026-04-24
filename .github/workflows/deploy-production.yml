@@ -23,54 +23,78 @@ jobs:
       - name: Validate deploy script
         run: test -x scripts/deploy-prod.sh
 
-      - name: Validate SSH host fingerprint secret
+      - name: Validate smoke test script
+        run: test -x scripts/smoke-test.sh
+
+      - name: Prepare SSH trust and key
         env:
           PROD_HOST: ${{ secrets.PROD_HOST }}
           PROD_PORT: ${{ secrets.PROD_PORT || 22 }}
+          PROD_USER: ${{ secrets.PROD_USER }}
+          PROD_SSH_KEY: ${{ secrets.PROD_SSH_KEY }}
           PROD_SSH_FINGERPRINT: ${{ secrets.PROD_SSH_FINGERPRINT }}
         run: |
           set -euo pipefail
-          scan="$(ssh-keyscan -p "$PROD_PORT" -t ed25519 "$PROD_HOST" 2>/dev/null || true)"
+          test -n "$PROD_HOST"
+          test -n "$PROD_USER"
+          test -n "$PROD_SSH_KEY"
+          test -n "$PROD_SSH_FINGERPRINT"
+          install -d -m 700 "$HOME/.ssh"
+          printf '%s\n' "$PROD_SSH_KEY" > "$HOME/.ssh/id_unitecube_prod"
+          chmod 600 "$HOME/.ssh/id_unitecube_prod"
+          scan="$(ssh-keyscan -p "$PROD_PORT" "$PROD_HOST" 2>/dev/null || true)"
           if [ -z "$scan" ]; then
-            echo "::error::Unable to scan ed25519 host key from production target."
+            echo "::error::Unable to scan host keys from production target."
             exit 1
           fi
-          actual="$(printf '%s\n' "$scan" | ssh-keygen -E sha256 -lf - | awk 'NR==1 {print $2}')"
-          echo "Computed SSH fingerprint: $actual"
-          if [ "$actual" != "$PROD_SSH_FINGERPRINT" ]; then
-            echo "::error::PROD_SSH_FINGERPRINT mismatch. Update secret to: $actual"
+          printf '%s\n' "$scan" > "$HOME/.ssh/known_hosts"
+
+          if ! printf '%s\n' "$scan" | ssh-keygen -E sha256 -lf - | awk '{print $2}' | grep -qx "$PROD_SSH_FINGERPRINT"; then
+            echo "::error::PROD_SSH_FINGERPRINT does not match scanned host keys."
+            echo "::group::Scanned fingerprints"
+            printf '%s\n' "$scan" | ssh-keygen -E sha256 -lf - | awk '{print $2}'
+            echo "::endgroup::"
             exit 1
           fi
 
       - name: Upload site bundle
-        uses: appleboy/scp-action@v0.1.7
-        with:
-          host: ${{ secrets.PROD_HOST }}
-          username: ${{ secrets.PROD_USER }}
-          key: ${{ secrets.PROD_SSH_KEY }}
-          fingerprint: ${{ secrets.PROD_SSH_FINGERPRINT }}
-          port: ${{ secrets.PROD_PORT || 22 }}
-          source: "public/*"
-          target: "/tmp/unitecube-release"
-          rm: true
+        env:
+          PROD_HOST: ${{ secrets.PROD_HOST }}
+          PROD_USER: ${{ secrets.PROD_USER }}
+          PROD_PORT: ${{ secrets.PROD_PORT || 22 }}
+        run: |
+          set -euo pipefail
+          tar -C public -czf /tmp/unitecube-release.tar.gz .
+          scp -P "$PROD_PORT" \
+            -i "$HOME/.ssh/id_unitecube_prod" \
+            -o IdentitiesOnly=yes \
+            -o StrictHostKeyChecking=yes \
+            /tmp/unitecube-release.tar.gz \
+            "$PROD_USER@$PROD_HOST:/tmp/unitecube-release.tar.gz"
 
       - name: Publish release on server
-        uses: appleboy/ssh-action@v1.2.0
-        with:
-          host: ${{ secrets.PROD_HOST }}
-          username: ${{ secrets.PROD_USER }}
-          key: ${{ secrets.PROD_SSH_KEY }}
-          fingerprint: ${{ secrets.PROD_SSH_FINGERPRINT }}
-          port: ${{ secrets.PROD_PORT || 22 }}
-          script: |
-            set -euo pipefail
-            DEPLOY_SRC_DIR="/tmp/unitecube-release/public"
-            DEPLOY_DEST_DIR="${{ secrets.PROD_WEB_ROOT }}"
-            test -d "$DEPLOY_SRC_DIR"
-            test -n "$DEPLOY_DEST_DIR"
-            mkdir -p "$DEPLOY_DEST_DIR"
-            rsync -a --delete "$DEPLOY_SRC_DIR"/ "$DEPLOY_DEST_DIR"/
-            echo "Deployment completed to $DEPLOY_DEST_DIR"
+        env:
+          PROD_HOST: ${{ secrets.PROD_HOST }}
+          PROD_USER: ${{ secrets.PROD_USER }}
+          PROD_PORT: ${{ secrets.PROD_PORT || 22 }}
+          PROD_WEB_ROOT: ${{ secrets.PROD_WEB_ROOT }}
+        run: |
+          set -euo pipefail
+          test -n "$PROD_WEB_ROOT"
+          ssh -p "$PROD_PORT" \
+            -i "$HOME/.ssh/id_unitecube_prod" \
+            -o IdentitiesOnly=yes \
+            -o StrictHostKeyChecking=yes \
+            "$PROD_USER@$PROD_HOST" \
+            "set -euo pipefail; \
+            DEPLOY_DEST_DIR='$PROD_WEB_ROOT'; \
+            TMP_RELEASE='/tmp/unitecube-release'; \
+            test -f /tmp/unitecube-release.tar.gz; \
+            mkdir -p \"\$TMP_RELEASE\" \"\$DEPLOY_DEST_DIR\"; \
+            tar -xzf /tmp/unitecube-release.tar.gz -C \"\$TMP_RELEASE\"; \
+            rsync -a --delete \"\$TMP_RELEASE\"/ \"\$DEPLOY_DEST_DIR\"/; \
+            rm -f /tmp/unitecube-release.tar.gz; \
+            echo Deployment completed to \"\$DEPLOY_DEST_DIR\""
 
       - name: Smoke test production
         env:
