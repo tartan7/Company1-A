@@ -40,8 +40,16 @@ jobs:
           test -n "$PROD_SSH_KEY"
           test -n "$PROD_SSH_FINGERPRINT"
           install -d -m 700 "$HOME/.ssh"
-          printf '%s\n' "$PROD_SSH_KEY" > "$HOME/.ssh/id_unitecube_prod"
+          normalized_key="$PROD_SSH_KEY"
+          if printf '%s' "$normalized_key" | grep -q '\\n'; then
+            normalized_key="$(printf '%b' "${normalized_key//\\n/$'\n'}")"
+          fi
+          printf '%s\n' "$normalized_key" > "$HOME/.ssh/id_unitecube_prod"
           chmod 600 "$HOME/.ssh/id_unitecube_prod"
+          if ! ssh-keygen -y -f "$HOME/.ssh/id_unitecube_prod" >/dev/null 2>&1; then
+            echo "::error::PROD_SSH_KEY is not a valid private key format."
+            exit 1
+          fi
           scan="$(ssh-keyscan -p "$PROD_PORT" "$PROD_HOST" 2>/dev/null || true)"
           if [ -z "$scan" ]; then
             echo "::error::Unable to scan host keys from production target."
