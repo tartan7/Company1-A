@@ -1,0 +1,62 @@
+name: Deploy Production
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - "public/**"
+      - "scripts/**"
+      - ".github/workflows/deploy-production.yml"
+
+jobs:
+  deploy:
+    name: Deploy Static Site To VPS
+    runs-on: ubuntu-latest
+    environment: production
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate deploy script
+        run: test -x scripts/deploy-prod.sh
+
+      - name: Upload site bundle
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.PROD_HOST }}
+          username: ${{ secrets.PROD_USER }}
+          key: ${{ secrets.PROD_SSH_KEY }}
+          fingerprint: ${{ secrets.PROD_SSH_FINGERPRINT }}
+          port: ${{ secrets.PROD_PORT || 22 }}
+          source: "public/*"
+          target: "/tmp/unitecube-release"
+          rm: true
+
+      - name: Publish release on server
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.PROD_HOST }}
+          username: ${{ secrets.PROD_USER }}
+          key: ${{ secrets.PROD_SSH_KEY }}
+          fingerprint: ${{ secrets.PROD_SSH_FINGERPRINT }}
+          port: ${{ secrets.PROD_PORT || 22 }}
+          script: |
+            set -euo pipefail
+            DEPLOY_SRC_DIR="/tmp/unitecube-release/public"
+            DEPLOY_DEST_DIR="${{ secrets.PROD_WEB_ROOT }}"
+            test -d "$DEPLOY_SRC_DIR"
+            test -n "$DEPLOY_DEST_DIR"
+            mkdir -p "$DEPLOY_DEST_DIR"
+            rsync -a --delete "$DEPLOY_SRC_DIR"/ "$DEPLOY_DEST_DIR"/
+            echo "Deployment completed to $DEPLOY_DEST_DIR"
+
+      - name: Smoke test production
+        env:
+          PROD_BASE_URL: ${{ secrets.PROD_BASE_URL }}
+        run: |
+          set -euo pipefail
+          test -n "$PROD_BASE_URL"
+          bash scripts/smoke-test.sh "$PROD_BASE_URL"
