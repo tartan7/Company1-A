@@ -14,9 +14,9 @@ assert_contains() {
   fi
 }
 
-assert_contains "${BASE_URL%/}/dashboard.html" "実行履歴"
-assert_contains "${BASE_URL%/}/workflows.html" "ワークフロー設定"
-assert_contains "${BASE_URL%/}/support.html" "サポートリクエスト"
+assert_contains "${BASE_URL%/}/public/dashboard.html" "実行履歴"
+assert_contains "${BASE_URL%/}/public/workflows.html" "ワークフロー設定"
+assert_contains "${BASE_URL%/}/public/support.html" "サポートリクエスト"
 assert_contains "${BASE_URL%/}/docs/BRAND-IDENTITY-REVIEW.html" "Brand Identity Review Deck"
 
 echo "Smoke test passed for $BASE_URL"
