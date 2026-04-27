@@ -1,6 +1,6 @@
 # クロスブラウザテスト・パフォーマンス最適化ガイド — UniteCube
 
-_作成日：2026年4月22日 / v1.0_
+作成日：2026年4月22日 / v1.0
 
 ---
 
@@ -10,10 +10,10 @@ _作成日：2026年4月22日 / v1.0_
 
 ### Core Web Vitals 目標値
 
-| 指標 | 目標値 | 説明 |
-|------|--------|------|
-| **LCP**（Largest Contentful Paint） | < 2.5s | 最大コンテンツ描画時間 |
-| **CLS**（Cumulative Layout Shift） | < 0.1 | 累積レイアウトシフト |
+| 指標                                 | 目標値  | 説明                   |
+| ------------------------------------ | ------- | ---------------------- |
+| **LCP**（Largest Contentful Paint）  | < 2.5s  | 最大コンテンツ描画時間 |
+| **CLS**（Cumulative Layout Shift）   | < 0.1   | 累積レイアウトシフト   |
 | **INP**（Interaction to Next Paint） | < 200ms | 次の描画までの応答時間 |
 
 ---
@@ -22,18 +22,18 @@ _作成日：2026年4月22日 / v1.0_
 
 ### 1.1 テスト対象ブラウザ・環境
 
-| ブラウザ | バージョン | プラットフォーム | 優先度 |
-|---------|-----------|--------------|--------|
-| Chrome | 最新版 + 1世代前 | Windows / macOS / Android | 高 |
-| Firefox | 最新版 | Windows / macOS | 高 |
-| Safari | 最新版 | macOS / iOS | 高 |
-| Edge | 最新版 | Windows | 中 |
-| Chrome Mobile | 最新版 | Android（360dp 相当） | 高 |
-| Safari Mobile | 最新版 | iOS（375dp 相当） | 高 |
+| ブラウザ      | バージョン       | プラットフォーム          | 優先度 |
+| ------------- | ---------------- | ------------------------- | ------ |
+| Chrome        | 最新版 + 1世代前 | Windows / macOS / Android | 高     |
+| Firefox       | 最新版           | Windows / macOS           | 高     |
+| Safari        | 最新版           | macOS / iOS               | 高     |
+| Edge          | 最新版           | Windows                   | 中     |
+| Chrome Mobile | 最新版           | Android（360dp 相当）     | 高     |
+| Safari Mobile | 最新版           | iOS（375dp 相当）         | 高     |
 
 ### 1.2 テストビューポート一覧
 
-```
+```text
 モバイル（縦）  : 375 × 812  （iPhone 14 相当）
 モバイル（横）  : 812 × 375
 タブレット     : 768 × 1024  （iPad 相当）
@@ -44,6 +44,7 @@ _作成日：2026年4月22日 / v1.0_
 ### 1.3 チェックリスト
 
 #### レイアウト確認
+
 - [ ] ヘッダー・フッターが全ビューポートで崩れていない
 - [ ] ナビゲーションメニューがモバイルでハンバーガー表示になっている
 - [ ] 問い合わせフォーム（Contact Form 7）が全ブラウザで送信できる
@@ -51,12 +52,15 @@ _作成日：2026年4月22日 / v1.0_
 - [ ] 画像が適切なサイズで表示されている
 
 #### 機能確認
+
 - [ ] Webhookトリガー（フォーム送信）が全ブラウザで動作する
-- [ ] JavaScriptエラーがコンソールに出ていない（Chrome DevTools / Firefox DevTools で確認）
+- [ ] JavaScriptエラーがコンソールに出ていない（Chrome DevTools / Firefox
+      DevTools で確認）
 - [ ] CSS Gridおよびflexboxレイアウトが一貫している
 - [ ] 画像の遅延読み込み（`loading="lazy"`）がサポートブラウザで動作する
 
 #### アクセシビリティ
+
 - [ ] タブキーでフォーカス移動ができる
 - [ ] コントラスト比がWCAG 2.1 AA基準（4.5:1）を満たしている
 - [ ] 画像に`alt`属性が設定されている
@@ -64,12 +68,12 @@ _作成日：2026年4月22日 / v1.0_
 ### 1.4 テストツール
 
 | ツール | 用途 | URL |
-|--------|------|-----|
-| BrowserStack / LambdaTest | 実機クロスブラウザテスト | サブスクリプション不要の場合はローカル実機で代替 |
-| Chrome DevTools Device Mode | モバイル表示シミュレーション | ブラウザ内蔵 |
-| Firefox Responsive Design Mode | モバイル表示シミュレーション | ブラウザ内蔵 |
-| W3C Markup Validator | HTMLバリデーション | https://validator.w3.org |
-| PageSpeed Insights | Core Web Vitals計測 | https://pagespeed.web.dev |
+| --- | --- | --- |
+| BrowserStack/LambdaTest | 実機クロスブラウザテスト | ローカル実機で代替可 |
+| Chrome DevTools | モバイル表示確認 | ブラウザ内蔵 |
+| Firefox RDM | モバイル表示確認 | ブラウザ内蔵 |
+| W3C Validator | HTMLバリデーション | <https://validator.w3.org> |
+| PageSpeed Insights | Core Web Vitals計測 | <https://pagespeed.web.dev> |
 
 ---
 
@@ -77,7 +81,8 @@ _作成日：2026年4月22日 / v1.0_
 
 ### 2.1 次世代フォーマットへの移行
 
-WordPressにおいては、`<picture>` 要素と `srcset` を組み合わせてWebP/AVIFを提供し、非対応ブラウザにはJPEG/PNGをフォールバックします。
+WordPressにおいては、`<picture>` 要素と `srcset`
+を組み合わせてWebP/AVIFを提供し、非対応ブラウザにはJPEG/PNGをフォールバックします。
 
 ```html
 <picture>
@@ -109,13 +114,14 @@ WordPressにおいては、`<picture>` 要素と `srcset` を組み合わせてW
 
 ### 2.2 WordPress プラグインによる自動変換
 
-| プラグイン | 機能 | 推奨 |
-|-----------|------|------|
-| Imagify | WebP自動変換、圧縮、CDN連携 | ◎ |
-| ShortPixel | AVIF・WebP変換、バルク最適化 | ◎ |
-| EWWW Image Optimizer | 無料枠あり、WebP変換可能 | ○ |
+| プラグイン           | 機能                         | 推奨 |
+| -------------------- | ---------------------------- | ---- |
+| Imagify              | WebP自動変換、圧縮、CDN連携  | ◎    |
+| ShortPixel           | AVIF・WebP変換、バルク最適化 | ◎    |
+| EWWW Image Optimizer | 無料枠あり、WebP変換可能     | ○    |
 
 **推奨設定（Imagify）：**
+
 - 変換レベル：Aggressive（品質85%相当）
 - WebP：有効（`<picture>`タグを自動生成）
 - 遅延読み込み：有効
@@ -143,37 +149,56 @@ WordPressにおいては、`<picture>` 要素と `srcset` を組み合わせてW
 
 ### 3.2 WordPress での実装
 
-WordPress 5.5以降、コアがネイティブ遅延読み込みをサポートしています。以下の設定を確認してください。
+WordPress
+5.5以降、コアがネイティブ遅延読み込みをサポートしています。以下の設定を確認してください。
 
 ```php
 // functions.php — 先頭画像のみeagerを強制（LCP改善）
-function uc_set_hero_image_eager( $attr, $attachment, $size ) {
+function uc_set_hero_image_eager(
+    $attr,
+    $attachment,
+    $size
+) {
     // ヒーロー画像はクラス名で識別
-    if ( isset( $attr['class'] ) && strpos( $attr['class'], 'hero-image' ) !== false ) {
+    if (
+        isset( $attr['class'] ) &&
+        strpos( $attr['class'], 'hero-image' ) !== false
+    ) {
         $attr['loading'] = 'eager';
         $attr['fetchpriority'] = 'high';
     }
     return $attr;
 }
-add_filter( 'wp_get_attachment_image_attributes', 'uc_set_hero_image_eager', 10, 3 );
+add_filter(
+    'wp_get_attachment_image_attributes',
+    'uc_set_hero_image_eager',
+    10,
+    3
+);
 ```
 
 ### 3.3 スクロール検知による遅延コンテンツ読み込み
 
-n8n実行ログウィジェット等、APIを呼ぶコンポーネントはIntersection Observer APIで遅延初期化します。
+n8n実行ログウィジェット等、APIを呼ぶコンポーネントはIntersection Observer
+APIで遅延初期化します。
 
 ```javascript
 // ダッシュボードウィジェットの遅延初期化
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      initDashboardWidget(entry.target);
-      observer.unobserve(entry.target);
-    }
-  });
-}, { rootMargin: '200px' });
+const observer = new IntersectionObserver(
+  (entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        initDashboardWidget(entry.target);
+        observer.unobserve(entry.target);
+      }
+    });
+  },
+  { rootMargin: "200px" },
+);
 
-document.querySelectorAll('.dashboard-widget').forEach(el => observer.observe(el));
+document
+  .querySelectorAll(".dashboard-widget")
+  .forEach((el) => observer.observe(el));
 ```
 
 ---
@@ -185,20 +210,20 @@ document.querySelectorAll('.dashboard-widget').forEach(el => observer.observe(el
 ```css
 /* style.css または カスタムCSS */
 @font-face {
-  font-family: 'Noto Sans JP';
+  font-family: "Noto Sans JP";
   font-style: normal;
   font-weight: 400;
   font-display: swap; /* フォント読み込み中はシステムフォントで表示 */
-  src: url('fonts/noto-sans-jp-regular.woff2') format('woff2');
+  src: url("fonts/noto-sans-jp-regular.woff2") format("woff2");
   unicode-range: U+3000-9FFF, U+F900-FAFF, U+FF00-FFEF; /* 日本語グリフのみ */
 }
 
 @font-face {
-  font-family: 'Noto Sans JP';
+  font-family: "Noto Sans JP";
   font-style: normal;
   font-weight: 700;
   font-display: swap;
-  src: url('fonts/noto-sans-jp-bold.woff2') format('woff2');
+  src: url("fonts/noto-sans-jp-bold.woff2") format("woff2");
   unicode-range: U+3000-9FFF, U+F900-FAFF, U+FF00-FFEF;
 }
 ```
@@ -272,14 +297,16 @@ add_filter( 'script_loader_tag', 'uc_defer_non_critical_scripts', 10, 3 );
 
 ### 5.2 CSSの結合と最小化
 
-| プラグイン | 機能 | 推奨 |
-|-----------|------|------|
-| WP Rocket | CSS/JS結合・最小化、Critical CSS生成 | ◎（有料） |
-| Autoptimize | 無料、CSS/JS最適化 | ○ |
-| LiteSpeed Cache | LiteSpeedサーバ専用、高機能 | ◎（KUSANAGI環境） |
+| プラグイン      | 機能                                 | 推奨              |
+| --------------- | ------------------------------------ | ----------------- |
+| WP Rocket       | CSS/JS結合・最小化、Critical CSS生成 | ◎（有料）         |
+| Autoptimize     | 無料、CSS/JS最適化                   | ○                 |
+| LiteSpeed Cache | LiteSpeedサーバ専用、高機能          | ◎（KUSANAGI環境） |
 
 **推奨設定：**
-- CSS：結合 + 最小化 + Critical CSS（ファーストビュー分を`<head>`にインライン化）
+
+- CSS：結合 + 最小化 + Critical
+  CSS（ファーストビュー分を`<head>`にインライン化）
 - JS：非クリティカルは`defer`または`async`、結合は慎重に（依存関係の破壊を防ぐ）
 - HTMLの最小化：有効
 
@@ -296,18 +323,23 @@ add_filter( 'script_loader_tag', 'uc_defer_non_critical_scripts', 10, 3 );
   .hero { ... }
 </style>
 <!-- 残りのCSSを非同期読み込み -->
-<link rel="preload" href="style.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="style.css"></noscript>
+<link
+  rel="preload"
+  href="style.css"
+  as="style"
+  onload="this.onload=null;this.rel='stylesheet'"
+/>
+<noscript><link rel="stylesheet" href="style.css" /></noscript>
 ```
 
 ### 5.4 サードパーティスクリプトの管理
 
 | スクリプト | 最適化方針 |
-|-----------|-----------|
-| Google Analytics | `async`属性で読み込み、Partytown経由でWorkerに移動を検討 |
-| Googleマップ | ユーザー操作（クリック/スクロール）時に初めて読み込む |
-| チャットウィジェット | スクロールまたは一定時間後に遅延読み込み |
-| reCAPTCHA | フォームが表示されるページのみ読み込む |
+| --- | --- |
+| Google Analytics | `async` + 必要に応じて Partytown 移行 |
+| Googleマップ | クリック/スクロール時に遅延読み込み |
+| チャット | 一定時間後またはスクロール時に遅延読み込み |
+| reCAPTCHA | フォーム表示ページのみで読み込む |
 
 ---
 
@@ -315,14 +347,14 @@ add_filter( 'script_loader_tag', 'uc_defer_non_critical_scripts', 10, 3 );
 
 ### 6.1 PageSpeed Insights でのフィールドデータ確認
 
-1. https://pagespeed.web.dev にアクセス
+1. <https://pagespeed.web.dev> にアクセス
 2. `https://unitecube.jp` を入力して分析
 3. 「モバイル」と「デスクトップ」の両方を確認
 4. Core Web Vitals の各指標が目標値内かチェック
 
 ### 6.2 Chrome DevTools による詳細計測
 
-```
+```text
 1. Chrome で unitecube.jp を開く
 2. DevTools を開く（F12）
 3. [Lighthouse] タブ → カテゴリ「Performance」のみ選択
@@ -332,15 +364,15 @@ add_filter( 'script_loader_tag', 'uc_defer_non_critical_scripts', 10, 3 );
 
 ### 6.3 定期計測スケジュール
 
-| タイミング | 計測内容 |
-|-----------|---------|
-| デプロイ前後 | PageSpeed Insightsでモバイル・デスクトップスコア記録 |
-| 月次 | CrUX（Chrome UX Report）FieldDataとの乖離確認 |
-| プラグイン追加時 | 追加前後でスコアを比較 |
+| タイミング       | 計測内容                                             |
+| ---------------- | ---------------------------------------------------- |
+| デプロイ前後     | PageSpeed Insightsでモバイル・デスクトップスコア記録 |
+| 月次             | CrUX（Chrome UX Report）FieldDataとの乖離確認        |
+| プラグイン追加時 | 追加前後でスコアを比較                               |
 
 ### 6.4 計測結果の記録フォーマット
 
-```
+```text
 計測日: YYYY-MM-DD
 ページ: https://unitecube.jp/
 ブラウザ環境: モバイル / デスクトップ
@@ -406,12 +438,12 @@ define( 'WP_REDIS_PORT', 6379 );
 ### よくある問題と対処
 
 | 問題 | 原因 | 対処 |
-|------|------|------|
-| Safari でWebP が表示されない | Safari 14未満はWebP非対応 | `<picture>`でJPEGフォールバックを必ず提供 |
-| iOS Safari でフォントが崩れる | `font-display: swap`によるCLS | `font-display: optional`に変更し初回FLASHを回避 |
-| FirefoxでCLSが大きい | 画像にwidth/heightなし | 全`<img>`にwidth・height属性を付与 |
-| INPが高い（入力遅延） | メインスレッドブロッキング | 重いJSを`setTimeout`や`requestIdleCallback`で分割 |
-| LCPが遅い | ヒーロー画像の遅延読み込み | ヒーロー画像を`loading="eager"`・`fetchpriority="high"`に設定 |
+| --- | --- | --- |
+| Safari で WebP 非表示 | Safari 14 未満は非対応 | `<picture>` で JPEG フォールバックを提供 |
+| iOS Safari でフォント崩れ | `font-display` が CLS を増加 | `font-display: optional` を検討 |
+| Firefox の CLS 増大 | 画像に width/height がない | 全 `<img>` に width/height を付与 |
+| INP が高い | メインスレッドを長時間占有 | `setTimeout` / `requestIdleCallback` で分割 |
+| LCP が遅い | ヒーロー画像を遅延読み込み | `loading=\"eager\"` と `fetchpriority=\"high\"` を設定 |
 
 ---
 
@@ -424,4 +456,4 @@ define( 'WP_REDIS_PORT', 6379 );
 
 ---
 
-_UniteCube — 北海道稚内市 / v1.0 — 2026年4月_
+UniteCube — 北海道稚内市 / v1.0 — 2026年4月
