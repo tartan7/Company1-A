@@ -4,6 +4,18 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>サポートリクエスト — UniteCube クライアントダッシュボード</title>
+  <meta name="description" content="UniteCubeのサポートリクエストページ。変更依頼やエラー報告を送信し、対応状況を確認できます。">
+  <meta name="robots" content="index,follow">
+  <link rel="canonical" href="https://unitecube.jp/support.html">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="ja_JP">
+  <meta property="og:site_name" content="UniteCube">
+  <meta property="og:title" content="サポートリクエスト — UniteCube クライアントダッシュボード">
+  <meta property="og:description" content="変更依頼やエラー報告を送信し、対応状況を確認。">
+  <meta property="og:url" content="https://unitecube.jp/support.html">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="サポートリクエスト — UniteCube">
+  <meta name="twitter:description" content="変更依頼やエラー報告を送信し、対応状況を確認。">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -50,14 +62,14 @@
 
     <div class="sidebar-user">
       <p class="sidebar-user-name">株式会社サンプル商事</p>
-      <a href="#" class="sidebar-user-logout" aria-label="ログアウト">
+      <button type="button" class="sidebar-user-logout" aria-label="ログアウト" data-action="logout">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/>
           <polyline points="16 17 21 12 16 7"/>
           <line x1="21" y1="12" x2="9" y2="12"/>
         </svg>
         <span>ログアウト</span>
-      </a>
+      </button>
     </div>
   </nav>
 
@@ -228,38 +240,38 @@
 
             <div class="ticket-list" id="ticketList">
 
-              <div class="ticket-item" role="button" tabindex="0" aria-label="チケット詳細を開く: Googleスプレッドシート連携でエラーが発生しています">
+              <button type="button" class="ticket-item" aria-label="チケット詳細を開く: 週次レポート作成時に集計が途中で停止します" data-ticket-subject="週次レポート作成時に集計が途中で停止します">
                 <div class="ticket-item-header">
-                  <span class="ticket-item-subject">Googleスプレッドシート連携でエラーが発生しています</span>
+                  <span class="ticket-item-subject">週次レポート作成時に集計が途中で停止します</span>
                   <span class="badge badge-error" aria-label="ステータス：未対応">未対応</span>
                 </div>
                 <div style="display:flex;align-items:center;justify-content:space-between;">
                   <span style="font-size:var(--font-size-xs);padding:2px 6px;background-color:var(--color-error-bg);color:var(--color-error);border-radius:var(--radius-sm);">エラー報告</span>
                   <span class="ticket-item-meta">2026/04/21</span>
                 </div>
-              </div>
+              </button>
 
-              <div class="ticket-item" role="button" tabindex="0" aria-label="チケット詳細を開く: LINE返信のメッセージ文言を変更したい">
+              <button type="button" class="ticket-item" aria-label="チケット詳細を開く: 予約完了メッセージに店舗名を追加したい" data-ticket-subject="予約完了メッセージに店舗名を追加したい">
                 <div class="ticket-item-header">
-                  <span class="ticket-item-subject">LINE返信のメッセージ文言を変更したい</span>
+                  <span class="ticket-item-subject">予約完了メッセージに店舗名を追加したい</span>
                   <span class="badge badge-warning" aria-label="ステータス：対応中">対応中</span>
                 </div>
                 <div style="display:flex;align-items:center;justify-content:space-between;">
                   <span style="font-size:var(--font-size-xs);padding:2px 6px;background-color:var(--color-warning-bg);color:var(--color-warning);border-radius:var(--radius-sm);">変更依頼</span>
                   <span class="ticket-item-meta">2026/04/15</span>
                 </div>
-              </div>
+              </button>
 
-              <div class="ticket-item" role="button" tabindex="0" aria-label="チケット詳細を開く: 月次レポートの送信先メールアドレスを追加したい">
+              <button type="button" class="ticket-item" aria-label="チケット詳細を開く: 月次レポートの送信先を管理部門にも共有したい" data-ticket-subject="月次レポートの送信先を管理部門にも共有したい">
                 <div class="ticket-item-header">
-                  <span class="ticket-item-subject">月次レポートの送信先メールアドレスを追加したい</span>
+                  <span class="ticket-item-subject">月次レポートの送信先を管理部門にも共有したい</span>
                   <span class="badge badge-success" aria-label="ステータス：解決済み">解決済み</span>
                 </div>
                 <div style="display:flex;align-items:center;justify-content:space-between;">
                   <span style="font-size:var(--font-size-xs);padding:2px 6px;background-color:var(--color-neutral-100);color:var(--color-neutral-700);border-radius:var(--radius-sm);">変更依頼</span>
                   <span class="ticket-item-meta">2026/04/05</span>
                 </div>
-              </div>
+              </button>
 
             </div>
 
@@ -282,191 +294,8 @@
 <!-- ── トースト通知コンテナ ── -->
 <div class="toast-container" id="toastContainer" aria-live="polite" aria-atomic="false"></div>
 
-<script>
-  // ── ハンバーガーメニュー ──
-  const hamburgerBtn = document.getElementById('hamburgerBtn');
-  const sidebar      = document.getElementById('sidebar');
-  const overlay      = document.getElementById('sidebarOverlay');
-
-  hamburgerBtn.addEventListener('click', () => {
-    const isOpen = sidebar.classList.contains('open');
-    sidebar.classList.toggle('open');
-    overlay.classList.toggle('open');
-    overlay.setAttribute('aria-hidden', isOpen ? 'true' : 'false');
-    hamburgerBtn.setAttribute('aria-expanded', isOpen ? 'false' : 'true');
-  });
-  overlay.addEventListener('click', () => {
-    sidebar.classList.remove('open');
-    overlay.classList.remove('open');
-    overlay.setAttribute('aria-hidden', 'true');
-    hamburgerBtn.setAttribute('aria-expanded', 'false');
-  });
-
-  // ── 文字数カウンター ──
-  function setupCharCounter(inputId, counterId, max) {
-    const input   = document.getElementById(inputId);
-    const counter = document.getElementById(counterId);
-    input.addEventListener('input', () => {
-      const len = input.value.length;
-      counter.textContent = `${len} / ${max}`;
-      counter.style.color = len > max * 0.9 ? 'var(--color-warning)' : '';
-    });
-  }
-  setupCharCounter('subject', 'subject-counter', 100);
-  setupCharCounter('details', 'details-counter', 1000);
-
-  // ── ファイル選択 ──
-  document.getElementById('attachment').addEventListener('change', function() {
-    const file = this.files[0];
-    const label = document.getElementById('file-label-text');
-    const errorEl = document.getElementById('attachment-error');
-
-    if (!file) {
-      label.innerHTML = '<strong>クリックしてファイルを選択</strong>、またはここにドラッグ＆ドロップ';
-      return;
-    }
-    if (file.size > 5 * 1024 * 1024) {
-      errorEl.textContent = 'ファイルサイズが5MBを超えています。';
-      errorEl.classList.remove('hidden');
-      this.value = '';
-      return;
-    }
-    errorEl.classList.add('hidden');
-    label.innerHTML = `<strong>${file.name}</strong>（${(file.size / 1024).toFixed(0)} KB）`;
-  });
-
-  // ── フォーム送信 ──
-  document.getElementById('supportForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-
-    const subject  = document.getElementById('subject');
-    const category = document.getElementById('category');
-    const details  = document.getElementById('details');
-    let valid = true;
-
-    // バリデーション
-    [
-      { el: subject,  errorId: 'subject-error',  msg: '件名を入力してください。' },
-      { el: category, errorId: 'category-error', msg: 'カテゴリを選択してください。' },
-      { el: details,  errorId: 'details-error',  msg: '詳細を入力してください。' },
-    ].forEach(({ el, errorId, msg }) => {
-      const errorEl = document.getElementById(errorId);
-      if (!el.value.trim()) {
-        el.classList.add('error');
-        errorEl.textContent = msg;
-        errorEl.classList.remove('hidden');
-        valid = false;
-      } else {
-        el.classList.remove('error');
-        errorEl.classList.add('hidden');
-      }
-    });
-
-    if (!valid) return;
-
-    // 送信処理（プロトタイプ）
-    const submitBtn = document.getElementById('submitBtn');
-    submitBtn.disabled = true;
-    submitBtn.textContent = '送信中...';
-
-    setTimeout(() => {
-      // 成功メッセージ表示
-      document.getElementById('successMessage').classList.remove('hidden');
-      submitBtn.disabled = false;
-      submitBtn.innerHTML = `
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-        送信する`;
-
-      // 送信済みリストに追加
-      addTicketToList(subject.value, category.value);
-
-      // フォームリセット
-      this.reset();
-      document.getElementById('subject-counter').textContent = '0 / 100';
-      document.getElementById('details-counter').textContent = '0 / 1000';
-      document.getElementById('file-label-text').innerHTML = '<strong>クリックしてファイルを選択</strong>、またはここにドラッグ＆ドロップ';
-
-      // 3秒後に成功メッセージを非表示
-      setTimeout(() => {
-        document.getElementById('successMessage').classList.add('hidden');
-      }, 6000);
-    }, 800);
-  });
-
-  const categoryLabels = {
-    change: { label: '変更依頼', bg: 'var(--color-neutral-100)', color: 'var(--color-neutral-700)' },
-    error:  { label: 'エラー報告', bg: 'var(--color-error-bg)', color: 'var(--color-error)' },
-    other:  { label: 'その他', bg: 'var(--color-neutral-100)', color: 'var(--color-neutral-700)' },
-  };
-
-  function addTicketToList(subject, category) {
-    const ticketList = document.getElementById('ticketList');
-    const countEl    = document.getElementById('ticket-count');
-
-    const now = new Date();
-    const dateStr = `${now.getFullYear()}/${String(now.getMonth()+1).padStart(2,'0')}/${String(now.getDate()).padStart(2,'0')}`;
-    const cat = categoryLabels[category] || categoryLabels.other;
-    const subjectEscaped = subject.replace(/[<>&"]/g, c => ({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;'}[c]));
-
-    const item = document.createElement('div');
-    item.className = 'ticket-item';
-    item.setAttribute('role', 'button');
-    item.setAttribute('tabindex', '0');
-    item.setAttribute('aria-label', `チケット詳細を開く: ${subjectEscaped}`);
-    item.innerHTML = `
-      <div class="ticket-item-header">
-        <span class="ticket-item-subject">${subjectEscaped}</span>
-        <span class="badge badge-warning" aria-label="ステータス：対応中">対応中</span>
-      </div>
-      <div style="display:flex;align-items:center;justify-content:space-between;">
-        <span style="font-size:var(--font-size-xs);padding:2px 6px;background-color:${cat.bg};color:${cat.color};border-radius:var(--radius-sm);">${cat.label}</span>
-        <span class="ticket-item-meta">${dateStr}</span>
-      </div>`;
-
-    // リストの先頭に挿入
-    ticketList.insertBefore(item, ticketList.firstChild);
-
-    // 件数更新
-    const current = parseInt(countEl.textContent) || 0;
-    countEl.textContent = `${current + 1}件`;
-
-    // 空状態を非表示
-    document.getElementById('emptyTickets').classList.add('hidden');
-    ticketList.classList.remove('hidden');
-  }
-
-  // ── トースト ──
-  function showToast(type, title, text) {
-    const container = document.getElementById('toastContainer');
-    const icons = {
-      success: '<svg class="toast-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>',
-      error:   '<svg class="toast-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>',
-      warning: '<svg class="toast-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>',
-    };
-    const toast = document.createElement('div');
-    toast.className = `toast toast-${type}`;
-    toast.setAttribute('role', 'alert');
-    toast.innerHTML = `
-      ${icons[type] || ''}
-      <div class="toast-body">
-        <div class="toast-title">${title}</div>
-        ${text ? `<div class="toast-text">${text}</div>` : ''}
-      </div>
-      <button class="toast-close" aria-label="通知を閉じる">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-      </button>`;
-
-    toast.querySelector('.toast-close').addEventListener('click', () => removeToast(toast));
-    container.appendChild(toast);
-    setTimeout(() => removeToast(toast), type === 'error' ? 6000 : 3000);
-  }
-
-  function removeToast(toast) {
-    toast.style.transition = 'opacity 200ms ease, transform 200ms ease';
-    toast.style.opacity = '0';
-    toast.style.transform = 'translateX(100%)';
-    setTimeout(() => toast.remove(), 200);
-  }
-</script>
+<script src="js/core.js"></script>
+<script src="js/support.js"></script>
+<script src="js/analytics.js" defer data-analytics-endpoint="/api/analytics/events"></script>
 </body>
 </html>

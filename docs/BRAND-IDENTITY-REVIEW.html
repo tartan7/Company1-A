@@ -1,0 +1,465 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>UniteCube Brand Identity Review</title>
+  <style>
+    :root {
+      --brand-primary: #2563EB;
+      --brand-primary-dark: #1D4ED8;
+      --brand-primary-light: #DBEAFE;
+      --brand-secondary: #0F172A;
+      --success: #16A34A;
+      --warning: #D97706;
+      --error: #DC2626;
+      --neutral-900: #111827;
+      --neutral-700: #374151;
+      --neutral-500: #6B7280;
+      --neutral-300: #D1D5DB;
+      --neutral-100: #F3F4F6;
+      --neutral-50: #F9FAFB;
+      --white: #FFFFFF;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+      --shadow-md: 0 8px 24px rgba(15, 23, 42, 0.08);
+      --font-base: "Noto Sans JP", "Hiragino Kaku Gothic ProN", "Meiryo", sans-serif;
+      --font-mono: "Noto Sans Mono", "SFMono-Regular", "Consolas", monospace;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      color: var(--neutral-900);
+      background:
+        radial-gradient(1200px 600px at 100% -10%, rgba(37, 99, 235, 0.16), transparent 60%),
+        linear-gradient(180deg, #ffffff 0%, #f7f9fc 100%);
+      font-family: var(--font-base);
+      line-height: 1.6;
+    }
+
+    .container {
+      width: min(1100px, 92vw);
+      margin: 0 auto;
+      padding: 32px 0 80px;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, var(--brand-secondary) 0%, #1e293b 100%);
+      color: var(--white);
+      border-radius: var(--radius-lg);
+      padding: 32px;
+      box-shadow: var(--shadow-md);
+      margin-bottom: 24px;
+    }
+
+    .hero h1 {
+      margin: 0 0 8px;
+      font-size: 32px;
+      line-height: 1.2;
+    }
+
+    .hero p {
+      margin: 0;
+      color: #e2e8f0;
+      max-width: 72ch;
+    }
+
+    .meta {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 16px;
+      font-size: 14px;
+    }
+
+    .pill {
+      border: 1px solid rgba(255, 255, 255, 0.24);
+      border-radius: 999px;
+      padding: 6px 12px;
+    }
+
+    .toc {
+      background: var(--white);
+      border: 1px solid var(--neutral-100);
+      border-radius: var(--radius-md);
+      padding: 16px 18px;
+      margin-bottom: 24px;
+      box-shadow: var(--shadow-md);
+    }
+
+    .toc ul {
+      margin: 8px 0 0;
+      padding-left: 18px;
+      columns: 2;
+    }
+
+    .section {
+      background: var(--white);
+      border: 1px solid var(--neutral-100);
+      border-radius: var(--radius-md);
+      padding: 24px;
+      margin-bottom: 16px;
+      box-shadow: var(--shadow-md);
+    }
+
+    .section h2 {
+      margin-top: 0;
+      font-size: 24px;
+      color: var(--brand-secondary);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .logo-card {
+      border: 1px dashed var(--neutral-300);
+      border-radius: 10px;
+      padding: 16px;
+      min-height: 150px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      background: var(--neutral-50);
+    }
+
+    .logo-dark {
+      background: linear-gradient(135deg, #0f172a, #1e293b);
+      color: var(--white);
+      border-color: #334155;
+    }
+
+    .mock-logo {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      font-size: 22px;
+      letter-spacing: 0.2px;
+    }
+
+    .cube {
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      background: var(--brand-primary);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cube::before,
+    .cube::after {
+      content: "";
+      position: absolute;
+      background: rgba(255, 255, 255, 0.28);
+    }
+
+    .cube::before {
+      width: 100%;
+      height: 38%;
+      top: 0;
+      left: 0;
+    }
+
+    .cube::after {
+      width: 38%;
+      height: 100%;
+      top: 0;
+      right: 0;
+    }
+
+    .swatches {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .swatch {
+      border: 1px solid var(--neutral-100);
+      border-radius: 10px;
+      overflow: hidden;
+      background: var(--white);
+    }
+
+    .swatch .chip {
+      height: 64px;
+    }
+
+    .swatch .label {
+      padding: 10px;
+      font-size: 13px;
+      color: var(--neutral-700);
+    }
+
+    .type-row {
+      border-top: 1px solid var(--neutral-100);
+      padding: 12px 0;
+    }
+
+    .type-row:first-child { border-top: 0; }
+
+    .mono {
+      font-family: var(--font-mono);
+      color: var(--neutral-700);
+    }
+
+    .icon-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .icon-card {
+      border: 1px solid var(--neutral-100);
+      border-radius: 10px;
+      padding: 12px;
+      text-align: center;
+      background: var(--neutral-50);
+    }
+
+    .icon {
+      width: 24px;
+      height: 24px;
+      stroke-width: 2;
+      fill: none;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      margin-bottom: 6px;
+    }
+
+    .copy-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .copy-card {
+      border: 1px solid var(--neutral-100);
+      border-radius: 10px;
+      padding: 14px;
+      background: var(--neutral-50);
+    }
+
+    .copy-card h3 {
+      margin: 0 0 8px;
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .do { border-left: 4px solid var(--success); }
+    .dont { border-left: 4px solid var(--error); }
+
+    .btn-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 12px;
+    }
+
+    .btn {
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-weight: 600;
+      border: 1px solid transparent;
+      font-family: inherit;
+      font-size: 14px;
+      cursor: default;
+    }
+
+    .btn-primary {
+      background: var(--brand-primary);
+      border-color: var(--brand-primary);
+      color: var(--white);
+    }
+
+    .btn-secondary {
+      background: var(--white);
+      border-color: var(--neutral-300);
+      color: var(--neutral-900);
+    }
+
+    .btn-danger {
+      background: #fef2f2;
+      border-color: #fecaca;
+      color: var(--error);
+    }
+
+    footer {
+      margin-top: 24px;
+      color: var(--neutral-500);
+      font-size: 13px;
+      text-align: right;
+    }
+
+    @media (max-width: 900px) {
+      .grid,
+      .copy-grid,
+      .swatches,
+      .icon-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .toc ul {
+        columns: 1;
+      }
+
+      .hero h1 {
+        font-size: 26px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="container">
+    <section class="hero">
+      <h1>UniteCube Brand Identity Review Deck</h1>
+      <p>
+        Human-review artifact for visual validation of logo usage, color palette,
+        typography, iconography, and tone of voice.
+      </p>
+      <div class="meta">
+        <span class="pill">Version 1.1</span>
+        <span class="pill">Last updated: 2026-04-26</span>
+        <span class="pill">Source: docs/BRAND-IDENTITY.md</span>
+      </div>
+    </section>
+
+    <section class="toc">
+      <strong>Review checklist</strong>
+      <ul>
+        <li>Brand foundation</li>
+        <li>Logo system and usage matrix</li>
+        <li>Color palette and semantic roles</li>
+        <li>Typography scale and hierarchy</li>
+        <li>Iconography style and states</li>
+        <li>Tone of voice and microcopy</li>
+        <li>UI composition samples</li>
+      </ul>
+    </section>
+
+    <section class="section" id="brand-foundation">
+      <h2>1. Brand Foundation</h2>
+      <p><strong>Brand promise:</strong> UniteCube helps SMB teams run operations with confidence through clear, dependable workflow automation.</p>
+      <p><strong>Attributes:</strong> Trustworthy, clear, practical, friendly, reliable.</p>
+      <p><strong>Positioning:</strong> Enterprise-grade reliability without enterprise complexity.</p>
+    </section>
+
+    <section class="section" id="logo-system">
+      <h2>2. Logo System</h2>
+      <div class="grid">
+        <article class="logo-card">
+          <div class="mock-logo" style="color:#0f172a;"><span class="cube"></span>UniteCube</div>
+          <small>Full color on light background (default)</small>
+        </article>
+        <article class="logo-card logo-dark">
+          <div class="mock-logo" style="color:#ffffff;"><span class="cube" style="background:#ffffff;"></span>UniteCube</div>
+          <small>Reverse on dark background</small>
+        </article>
+        <article class="logo-card">
+          <div class="mock-logo" style="color:#111827;"><span class="cube" style="background:#111827;"></span></div>
+          <small>Symbol only (favicon, compact badge)</small>
+        </article>
+        <article class="logo-card">
+          <div class="mock-logo" style="color:#111827;"><span class="cube" style="background:#111827;"></span>UniteCube</div>
+          <small>Monochrome (print and one-ink constraints)</small>
+        </article>
+      </div>
+      <p><strong>Minimum size:</strong> full lockup 120px width, symbol 24px width. Never scale non-proportionally.</p>
+    </section>
+
+    <section class="section" id="colors">
+      <h2>3. Color Palette</h2>
+      <h3>Core brand</h3>
+      <div class="swatches">
+        <div class="swatch"><div class="chip" style="background:#2563EB"></div><div class="label"><strong>brand-primary</strong><br>#2563EB</div></div>
+        <div class="swatch"><div class="chip" style="background:#1D4ED8"></div><div class="label"><strong>brand-primary-dark</strong><br>#1D4ED8</div></div>
+        <div class="swatch"><div class="chip" style="background:#DBEAFE"></div><div class="label"><strong>brand-primary-light</strong><br>#DBEAFE</div></div>
+        <div class="swatch"><div class="chip" style="background:#0F172A"></div><div class="label"><strong>brand-secondary</strong><br>#0F172A</div></div>
+      </div>
+
+      <h3>Semantic</h3>
+      <div class="swatches">
+        <div class="swatch"><div class="chip" style="background:#16A34A"></div><div class="label"><strong>success</strong><br>#16A34A</div></div>
+        <div class="swatch"><div class="chip" style="background:#D97706"></div><div class="label"><strong>warning</strong><br>#D97706</div></div>
+        <div class="swatch"><div class="chip" style="background:#DC2626"></div><div class="label"><strong>error</strong><br>#DC2626</div></div>
+        <div class="swatch"><div class="chip" style="background:#6B7280"></div><div class="label"><strong>paused</strong><br>#6B7280</div></div>
+      </div>
+
+      <p><strong>Usage ratio:</strong> 70% neutral, 20% brand-secondary surfaces, 10% brand-primary and semantic accents.</p>
+    </section>
+
+    <section class="section" id="typography">
+      <h2>4. Typography</h2>
+      <p><strong>Primary stack:</strong> Noto Sans JP, Hiragino Kaku Gothic ProN, Meiryo, sans-serif</p>
+      <p><strong>Monospace:</strong> Noto Sans Mono, SFMono-Regular, Consolas, monospace</p>
+      <div class="type-row" style="font-size:24px;font-weight:700;">Page title (24px)</div>
+      <div class="type-row" style="font-size:20px;font-weight:700;">Section heading (20px)</div>
+      <div class="type-row" style="font-size:18px;font-weight:500;">Card title (18px)</div>
+      <div class="type-row" style="font-size:16px;">Body text (16px) for primary reading flow.</div>
+      <div class="type-row" style="font-size:14px;">Label and table text (14px).</div>
+      <div class="type-row" style="font-size:12px;color:#6b7280;">Caption and metadata (12px).</div>
+      <p class="mono">Monospace sample: RUN_ID=a7b3a924-c103-493f-9f20-28a55195f476</p>
+    </section>
+
+    <section class="section" id="iconography">
+      <h2>5. Iconography</h2>
+      <p>Use consistent geometric line icons with rounded caps and rounded joins.</p>
+      <div class="icon-grid">
+        <div class="icon-card">
+          <svg class="icon" viewBox="0 0 24 24" style="stroke:#2563EB"><path d="M3 12h18"></path><path d="M12 3v18"></path></svg>
+          <div>Add / Primary action</div>
+        </div>
+        <div class="icon-card">
+          <svg class="icon" viewBox="0 0 24 24" style="stroke:#16A34A"><path d="M20 6 9 17l-5-5"></path></svg>
+          <div>Success state</div>
+        </div>
+        <div class="icon-card">
+          <svg class="icon" viewBox="0 0 24 24" style="stroke:#D97706"><path d="M12 3 2 21h20Z"></path><path d="M12 9v5"></path><path d="M12 17h.01"></path></svg>
+          <div>Warning state</div>
+        </div>
+        <div class="icon-card">
+          <svg class="icon" viewBox="0 0 24 24" style="stroke:#DC2626"><circle cx="12" cy="12" r="9"></circle><path d="M15 9 9 15"></path><path d="M9 9l6 6"></path></svg>
+          <div>Error state</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="voice">
+      <h2>6. Tone of Voice</h2>
+      <div class="copy-grid">
+        <article class="copy-card do">
+          <h3>Do</h3>
+          <p><strong>Button:</strong> Save settings</p>
+          <p><strong>Error:</strong> Enter a valid email address.</p>
+          <p><strong>Empty state:</strong> No workflow runs yet. Start your first workflow to see activity here.</p>
+          <p><strong>Alert:</strong> Data sync is delayed by 8 minutes. Ops owner is investigating.</p>
+        </article>
+        <article class="copy-card dont">
+          <h3>Do Not</h3>
+          <p><strong>Button:</strong> Submit</p>
+          <p><strong>Error:</strong> Invalid input.</p>
+          <p><strong>Empty state:</strong> Nothing here.</p>
+          <p><strong>Alert:</strong> There is some issue.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" id="ui-composition">
+      <h2>7. UI Composition Samples</h2>
+      <p>Primary CTA uses filled brand color. Secondary actions are neutral outline. Destructive action uses semantic error styling.</p>
+      <div class="btn-row">
+        <button class="btn btn-primary" type="button">Start workflow</button>
+        <button class="btn btn-secondary" type="button">View details</button>
+        <button class="btn btn-danger" type="button">Delete run</button>
+      </div>
+    </section>
+
+    <footer>Prepared for human visual review as a companion artifact to docs/BRAND-IDENTITY.md.</footer>
+  </main>
+</body>
+</html>

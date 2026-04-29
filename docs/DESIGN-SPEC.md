@@ -1,460 +1,249 @@
-# デザイン仕様書 — UniteCube クライアントダッシュボード
-
-_作成日：2026年4月22日 / v1.0_
-
-> **注記：** 本仕様は既存のデザインファイルが存在しないため、プロジェクトドキュメント（README.md、TECH-STACK.md、getting-started.md）とターゲットユーザー（北海道の中小企業、非エンジニア）の要件から導出したものです。今後デザインファイルが追加された場合は本ドキュメントを更新してください。
-
----
-
-## 1. デザイン原則
-
-| 原則 | 説明 |
-|------|------|
-| **明快さ** | 情報は一目でわかるように構成する。専門用語を避け、ラベルは平易な日本語にする |
-| **信頼性** | SMEの経営者・担当者が使うため、プロフェッショナルで安定感のある外観を維持する |
-| **シンプルさ** | 機能は3つ（実行履歴・一時停止/再開・サポート）に絞られているため、UIも最小限に保つ |
-| **アクセシビリティ** | コントラスト比 WCAG 2.1 AA 以上。タッチ操作（スマートフォン）にも対応 |
-
----
-
-## 2. デザイントークン
-
-### 2.1 カラーパレット
-
-#### ブランドカラー
-
-| トークン名 | 値 | 用途 |
-|------------|-----|------|
-| `color-brand-primary` | `#2563EB` | プライマリアクション（ボタン、リンク、アクセント） |
-| `color-brand-primary-dark` | `#1D4ED8` | ホバー・フォーカス状態 |
-| `color-brand-primary-light` | `#DBEAFE` | 背景ハイライト、選択状態 |
-| `color-brand-secondary` | `#0F172A` | ロゴ・見出しなどの重要テキスト |
-
-#### セマンティックカラー
-
-| トークン名 | 値 | 用途 |
-|------------|-----|------|
-| `color-success` | `#16A34A` | 成功・稼働中ステータス |
-| `color-success-bg` | `#F0FDF4` | 成功バッジ背景 |
-| `color-warning` | `#D97706` | 警告・要確認 |
-| `color-warning-bg` | `#FFFBEB` | 警告バッジ背景 |
-| `color-error` | `#DC2626` | エラー・失敗ステータス |
-| `color-error-bg` | `#FEF2F2` | エラーバッジ背景 |
-| `color-paused` | `#6B7280` | 一時停止中ステータス |
-| `color-paused-bg` | `#F9FAFB` | 一時停止バッジ背景 |
-
-#### ニュートラルカラー
-
-| トークン名 | 値 | 用途 |
-|------------|-----|------|
-| `color-neutral-900` | `#111827` | 本文テキスト |
-| `color-neutral-700` | `#374151` | セカンダリテキスト |
-| `color-neutral-500` | `#6B7280` | プレースホルダー・補足テキスト |
-| `color-neutral-300` | `#D1D5DB` | ボーダー |
-| `color-neutral-100` | `#F3F4F6` | テーブル行ストライプ、区切り背景 |
-| `color-neutral-50` | `#F9FAFB` | ページ背景 |
-| `color-white` | `#FFFFFF` | カード・モーダル背景 |
-
----
-
-### 2.2 タイポグラフィ
-
-#### フォントファミリー
-
-| トークン名 | 値 | 備考 |
-|------------|-----|------|
-| `font-family-base` | `"Noto Sans JP", "Hiragino Kaku Gothic ProN", "Meiryo", sans-serif` | 日本語対応。Google Fonts経由で読み込み可能 |
-| `font-family-mono` | `"Noto Sans Mono", "SFMono-Regular", "Consolas", monospace` | ログ表示・タイムスタンプ |
-
-#### フォントサイズスケール
-
-| トークン名 | 値 | 用途 |
-|------------|-----|------|
-| `font-size-xs` | `12px` | 補足テキスト、メタ情報 |
-| `font-size-sm` | `14px` | テーブルセル、フォームラベル |
-| `font-size-base` | `16px` | 本文テキスト |
-| `font-size-lg` | `18px` | カード見出し、セクション小見出し |
-| `font-size-xl` | `20px` | ページ見出し（h2） |
-| `font-size-2xl` | `24px` | ページタイトル（h1） |
-
-#### フォントウェイト
-
-| トークン名 | 値 |
-|------------|----|
-| `font-weight-normal` | `400` |
-| `font-weight-medium` | `500` |
-| `font-weight-bold` | `700` |
-
-#### 行間
-
-| トークン名 | 値 |
-|------------|----|
-| `line-height-tight` | `1.25` |
-| `line-height-base` | `1.6` |
-| `line-height-loose` | `1.8` |
-
-> 日本語テキストは `line-height: 1.6〜1.8` が読みやすい。英語より広めに設定する。
-
----
-
-### 2.3 スペーシングスケール
-
-4pxベースのスケールを採用します。
-
-| トークン名 | 値 | 用途例 |
-|------------|-----|--------|
-| `spacing-1` | `4px` | アイコンとテキストの隙間 |
-| `spacing-2` | `8px` | インラインバッジのパディング |
-| `spacing-3` | `12px` | ボタン垂直パディング |
-| `spacing-4` | `16px` | カード内パディング（小） |
-| `spacing-5` | `20px` | フォームフィールド間マージン |
-| `spacing-6` | `24px` | カード内パディング（標準） |
-| `spacing-8` | `32px` | セクション間マージン |
-| `spacing-10` | `40px` | ページ上部パディング |
-| `spacing-12` | `48px` | 大セクション間マージン |
-| `spacing-16` | `64px` | ページ最大幅パディング |
-
----
-
-### 2.4 ボーダー半径
-
-| トークン名 | 値 | 用途 |
-|------------|-----|------|
-| `radius-sm` | `4px` | バッジ、タグ |
-| `radius-md` | `8px` | ボタン、入力フィールド |
-| `radius-lg` | `12px` | カード |
-| `radius-xl` | `16px` | モーダル |
-| `radius-full` | `9999px` | ピル型バッジ、アバター |
-
----
-
-### 2.5 シャドウ
-
-| トークン名 | 値 | 用途 |
-|------------|-----|------|
-| `shadow-sm` | `0 1px 2px rgba(0,0,0,0.05)` | テーブル行ホバー |
-| `shadow-md` | `0 4px 6px rgba(0,0,0,0.07)` | カード |
-| `shadow-lg` | `0 10px 15px rgba(0,0,0,0.10)` | ドロップダウン、ポップオーバー |
-| `shadow-xl` | `0 20px 25px rgba(0,0,0,0.10)` | モーダル |
-
----
-
-### 2.6 アニメーション
-
-| トークン名 | 値 | 用途 |
-|------------|-----|------|
-| `duration-fast` | `100ms` | ホバー効果 |
-| `duration-base` | `200ms` | ボタンクリック、フォーカスリング |
-| `duration-slow` | `300ms` | モーダル開閉、トースト表示 |
-| `easing-base` | `cubic-bezier(0.4, 0, 0.2, 1)` | 標準イージング |
-
----
-
-## 3. コンポーネントインベントリ
-
-### 3.1 ナビゲーション
-
-#### サイドバー（デスクトップ）/ ボトムナビ（モバイル）
-
-- **ロゴエリア：** UniteCubeロゴ + サービス名テキスト
-- **ナビゲーションリンク：**
-  - 実行履歴（デフォルトページ）
-  - ワークフロー設定（一時停止/再開）
-  - サポートリクエスト
-- **ユーザーエリア：** クライアント会社名 + ログアウトリンク
-
-#### ヘッダーバー
-
-- ページタイトル（現在地）
-- 最終更新時刻（自動更新）
-- スマートフォン用ハンバーガーメニュー
-
----
-
-### 3.2 ステータスバッジ
-
-実行ステータスを示すインラインバッジ。
-
-| バリアント | ラベル | カラートークン |
-|------------|--------|--------------|
-| `success` | 成功 | `color-success` / `color-success-bg` |
-| `error` | 失敗 | `color-error` / `color-error-bg` |
-| `warning` | 警告 | `color-warning` / `color-warning-bg` |
-| `paused` | 停止中 | `color-paused` / `color-paused-bg` |
-| `running` | 実行中 | `color-brand-primary` / `color-brand-primary-light` |
-
-```
-形状: pill (border-radius: full)
-パディング: 2px 8px
-フォント: font-size-xs, font-weight-medium
-```
-
----
-
-### 3.3 統計カード（サマリーカード）
-
-ダッシュボード上部に並ぶKPIカード群。
-
-| フィールド | 内容 |
-|------------|------|
-| ラベル | "直近7日間の実行数" など |
-| 主要数値 | 大きなフォントで表示（font-size-2xl, font-weight-bold） |
-| サブテキスト | "前週比 +12%" などのトレンド情報（オプション） |
-| アイコン | 右上または左側に配置 |
-
-想定カード：
-1. 総実行数（直近7日間）
-2. 成功率（%）
-3. 失敗件数
-4. 稼働ステータス（稼働中 / 停止中）
-
----
-
-### 3.4 実行履歴テーブル
-
-| カラム | 型 | 備考 |
-|--------|----|------|
-| 実行日時 | `datetime` | monospace フォント、`YYYY/MM/DD HH:mm` 形式 |
-| ワークフロー名 | `string` | — |
-| ステータス | `badge` | 上記バッジコンポーネントを使用 |
-| 所要時間 | `string` | "1.2秒" など |
-| 詳細 | `link` | エラー詳細の展開（エラー時のみ表示） |
-
-- デフォルト: 降順（新しい順）
-- ページネーション: 1ページ20件
-- 空状態: "まだ実行履歴がありません" メッセージ + イラスト
-
----
-
-### 3.5 ワークフロー制御カード
-
-一時停止 / 再開を操作するカード。
-
-```
-カード構成:
-  [ワークフロー名]
-  ステータスバッジ  最終実行: XX分前
-  [一時停止ボタン] または [再開ボタン]
-```
-
-- 一時停止ボタン: `variant=warning`（アウトライン）
-- 再開ボタン: `variant=success`（ソリッド）
-- 操作後にモーダルで確認ダイアログを表示
-
----
-
-### 3.6 ボタン
-
-| バリアント | 用途 | スタイル |
-|------------|------|--------|
-| `primary` | メインCTA（送信・保存） | 背景: `color-brand-primary`、テキスト: white |
-| `secondary` | 副アクション | 背景: white、ボーダー: `color-neutral-300`、テキスト: `color-neutral-700` |
-| `success` | 再開 | 背景: `color-success`、テキスト: white |
-| `warning` | 一時停止 | 背景: white、ボーダー: `color-warning`、テキスト: `color-warning` |
-| `danger` | 削除・取り消し | 背景: `color-error`、テキスト: white |
-| `ghost` | テキストリンク的な操作 | 背景: なし |
-
-サイズ:
-- `sm`: padding `6px 12px`、font-size-sm
-- `md`（デフォルト）: padding `10px 20px`、font-size-base
-- `lg`: padding `14px 28px`、font-size-lg
-
----
-
-### 3.7 サポートリクエストフォーム
-
-| フィールド | 種別 | バリデーション |
-|------------|------|--------------|
-| 件名 | テキスト入力 | 必須、最大100文字 |
-| カテゴリ | セレクトボックス | 必須（変更依頼 / エラー報告 / その他） |
-| 詳細 | テキストエリア（5行） | 必須、最大1000文字 |
-| 添付ファイル | ファイル入力 | 任意、最大5MB、画像・PDFのみ |
-
-送信後: インラインサクセスメッセージ（トーストではなくページ内に表示）
-
----
-
-### 3.8 トースト通知
-
-- 画面右下に表示（モバイルは画面上部）
-- 自動消去: success=3秒、error=6秒（×ボタンでも閉じられる）
-- スタック表示: 最大3件まで同時表示
-
----
-
-### 3.9 モーダルダイアログ
-
-一時停止/再開の確認に使用。
-
-```
-構成: オーバーレイ（背景暗転） + モーダルカード
-  タイトル（h2）
-  本文テキスト（確認メッセージ）
-  [キャンセル] [確認] ボタン行
-```
-
-- Escキー・オーバーレイクリックでキャンセル
-- フォーカストラップ（アクセシビリティ）
-
----
-
-### 3.10 空状態（Empty State）
-
-データがない場合のプレースホルダー。
-
-```
-中央揃え配置:
-  イラスト または アイコン（グレースケール）
-  見出しテキスト
-  補足テキスト
-  [アクションボタン]（任意）
-```
-
----
-
-## 4. ページレイアウト
-
-### 4.1 全体構造
-
-```
-┌─────────────────────────────────────────┐
-│  サイドバー (240px) │  メインコンテンツ   │
-│  ─────────────────  │  ─────────────────  │
-│  ロゴ               │  ヘッダーバー       │
-│  ─────────────────  │  ─────────────────  │
-│  ナビリンク         │  ページコンテンツ   │
-│                     │                     │
-│  ─────────────────  │                     │
-│  ユーザーエリア     │                     │
-└─────────────────────────────────────────┘
-```
-
-- サイドバー幅: 240px（固定）
-- メインコンテンツ最大幅: 1200px
-- コンテンツエリア水平パディング: `spacing-8`（32px）
-
-### 4.2 ダッシュボードトップページ（実行履歴）
-
-```
-┌──────────────────────────────────────────┐
-│  実行履歴                  最終更新: X分前 │
-├──────────────────────────────────────────┤
-│  [総実行数] [成功率] [失敗件数] [稼働状態]  │
-│  ─ サマリーカード 4列 ─                    │
-├──────────────────────────────────────────┤
-│  実行ログ                                  │
-│  ─ 実行履歴テーブル ─                      │
-│  [ < 前のページ  1  2  3  次のページ > ]    │
-└──────────────────────────────────────────┘
-```
-
-### 4.3 ワークフロー設定ページ
-
-```
-┌──────────────────────────────────────────┐
-│  ワークフロー設定                          │
-├──────────────────────────────────────────┤
-│  [ワークフローカード 1]  [ワークフローカード 2] │
-│  名前・ステータス・操作ボタン               │
-└──────────────────────────────────────────┘
-```
-
-カードグリッド: デスクトップ2列、モバイル1列
-
-### 4.4 サポートリクエストページ
-
-```
-┌──────────────────────────────────────────┐
-│  サポートリクエスト                        │
-├──────────────────────────────────────────┤
-│  [フォーム]                │  [送信済み一覧] │
-│  件名                      │  # 件名 / 日付  │
-│  カテゴリ                  │  # 件名 / 日付  │
-│  詳細                      │                │
-│  添付ファイル              │                │
-│  [送信する]                │                │
-└──────────────────────────────────────────┘
-```
-
-デスクトップ: 2カラム（フォーム左、履歴右）  
-モバイル: 1カラム（フォーム上、履歴下）
-
----
-
-## 5. グリッドシステム・レスポンシブブレークポイント
-
-| ブレークポイント名 | 幅 | レイアウト |
-|-------------------|----|----------|
-| `xs` | ～ 479px | 1カラム、サイドバー非表示（ボトムナビ） |
-| `sm` | 480px ～ 767px | 1カラム、サイドバー非表示（ハンバーガー） |
-| `md` | 768px ～ 1023px | サイドバー折りたたみ（アイコンのみ表示） |
-| `lg` | 1024px ～ 1279px | サイドバー展開、コンテンツ1カラム |
-| `xl` | 1280px 以上 | サイドバー展開、コンテンツ最大幅 1200px |
-
----
-
-## 6. アセットカタログ
-
-### 6.1 ロゴ
-
-| アセット | 仕様 |
-|---------|------|
-| ロゴ（横長） | SVG推奨、白背景・ダーク背景の2バリアント |
-| ロゴ（アイコンのみ） | 32×32px SVG（サイドバー折りたたみ時・ファビコン用） |
-
-> 現時点でロゴファイルは存在しない。作成時はSVGで納品し、`public/images/logo/` に格納すること。
-
-### 6.2 アイコン
-
-推奨ライブラリ: **Heroicons v2**（MIT License）またはLucide Icons
-
-| 用途 | アイコン名（Heroicons） |
-|------|----------------------|
-| 実行履歴 | `ClockIcon` |
-| ワークフロー設定 | `CogIcon` |
-| サポート | `ChatBubbleLeftRightIcon` |
-| 成功 | `CheckCircleIcon` |
-| エラー | `XCircleIcon` |
-| 警告 | `ExclamationTriangleIcon` |
-| 一時停止 | `PauseCircleIcon` |
-| 再開 | `PlayCircleIcon` |
-| ログアウト | `ArrowRightOnRectangleIcon` |
-
-### 6.3 イラスト
-
-- 空状態: シンプルな線画スタイル（カラーは `color-neutral-300` ベース）
-- 形式: SVG（インライン埋め込み可能にすること）
-
----
-
-## 7. アクセシビリティ要件
-
-| 項目 | 基準 |
-|------|------|
-| カラーコントラスト | WCAG 2.1 AA（通常テキスト 4.5:1以上、大きなテキスト 3:1以上） |
-| キーボード操作 | すべてのインタラクティブ要素をTabキーで操作可能にする |
-| フォーカスリング | `:focus-visible` で明示的なリングを表示（outline: 2px solid `color-brand-primary`） |
-| ラベル | フォーム入力にはすべて `<label>` を明示的に紐付ける |
-| スクリーンリーダー | ステータスバッジには `aria-label` を付与（色だけに頼らない） |
-| タッチターゲット | 最小タッチ領域 44×44px（iOS/Android HIG準拠） |
-
----
-
-## 8. 実装ガイドライン
-
-### WordPress フェーズ（現在）
-
-- テーマ: カスタム子テーマ（親テーマは Underscores / _s 推奨）
-- デザイントークンは `style.css` 内の CSS カスタムプロパティ（`--color-brand-primary` 等）として定義
-- コンポーネントはACFブロック または ショートコードで実装
-- Noto Sans JP は Google Fonts の `<link>` タグで読み込み（400, 500, 700 ウェイト）
-
-### SPA移行後（Vue.js / Alpine.js）
-
-- デザイントークンは Tailwind CSS の `tailwind.config.js` に移植
-- コンポーネントは Vue SFC または Alpine.js `x-data` コンポーネントとして実装
-- アイコンは Heroicons の Vue/React パッケージを使用
-
----
-
-_UniteCube — 北海道稚内市 / v1.0 — 2026年4月_
+# Design Spec - UniteCube Client Dashboard
+
+Updated: 2026-04-26 (UTC)
+
+## Scope and Source of Truth
+
+This spec is extracted from the checked-in UI implementation files:
+
+- `public/css/style.css`
+- `public/dashboard.html`
+- `public/workflows.html`
+- `public/support.html`
+
+Requested source folder `designs/` is not present in this checkout, and no
+design files (`.pdf`, `.png`, `.jpg`, `.svg`) were found in the repository tree
+at runtime.
+
+## 1. Design Tokens
+
+### 1.1 Colors (hex)
+
+All tokens are defined in `:root` in `public/css/style.css`.
+
+#### Brand
+
+- `--color-brand-primary`: `#2563EB`
+- `--color-brand-primary-dark`: `#1D4ED8`
+- `--color-brand-primary-light`: `#DBEAFE`
+- `--color-brand-secondary`: `#0F172A`
+
+#### Semantic
+
+- `--color-success`: `#16A34A`
+- `--color-success-dark`: `#15803D`
+- `--color-success-border`: `#BBF7D0`
+- `--color-success-bg`: `#F0FDF4`
+- `--color-warning`: `#D97706`
+- `--color-warning-bg`: `#FFFBEB`
+- `--color-error`: `#DC2626`
+- `--color-error-dark`: `#B91C1C`
+- `--color-error-bg`: `#FEF2F2`
+- `--color-paused`: `#6B7280`
+- `--color-paused-bg`: `#F9FAFB`
+
+#### Neutral
+
+- `--color-neutral-900`: `#111827`
+- `--color-neutral-700`: `#374151`
+- `--color-neutral-500`: `#6B7280`
+- `--color-neutral-300`: `#D1D5DB`
+- `--color-neutral-100`: `#F3F4F6`
+- `--color-neutral-50`: `#F9FAFB`
+- `--color-white`: `#FFFFFF`
+
+Note: No OKLCH tokens are used in current implementation.
+
+### 1.2 Typography
+
+- Base family:
+  `"Noto Sans JP", "Hiragino Kaku Gothic ProN", "Meiryo", sans-serif`
+- Mono family: `"Noto Sans Mono", "SFMono-Regular", "Consolas", monospace`
+- Font sizes:
+  - `--font-size-xs`: `12px`
+  - `--font-size-sm`: `14px`
+  - `--font-size-base`: `16px`
+  - `--font-size-lg`: `18px`
+  - `--font-size-xl`: `20px`
+  - `--font-size-2xl`: `24px`
+- Weights: `400`, `500`, `700`
+- Line heights:
+  - `--line-height-tight`: `1.25`
+  - `--line-height-base`: `1.6`
+  - `--line-height-loose`: `1.8`
+
+### 1.3 Spacing Scale
+
+4px base scale tokens:
+
+- `--spacing-1`: `4px`
+- `--spacing-2`: `8px`
+- `--spacing-3`: `12px`
+- `--spacing-4`: `16px`
+- `--spacing-5`: `20px`
+- `--spacing-6`: `24px`
+- `--spacing-8`: `32px`
+- `--spacing-10`: `40px`
+- `--spacing-12`: `48px`
+- `--spacing-16`: `64px`
+
+### 1.4 Border Radius
+
+- `--radius-sm`: `4px`
+- `--radius-md`: `8px`
+- `--radius-lg`: `12px`
+- `--radius-xl`: `16px`
+- `--radius-full`: `9999px`
+
+### 1.5 Shadows
+
+- `--shadow-sm`: `0 1px 2px rgba(0,0,0,0.05)`
+- `--shadow-md`: `0 4px 6px rgba(0,0,0,0.07)`
+- `--shadow-lg`: `0 10px 15px rgba(0,0,0,0.10)`
+- `--shadow-xl`: `0 20px 25px rgba(0,0,0,0.10)`
+
+### 1.6 Motion
+
+- Durations:
+  - `--duration-fast`: `100ms`
+  - `--duration-base`: `200ms`
+  - `--duration-slow`: `300ms`
+- Easing: `--easing-base`: `cubic-bezier(0.4, 0, 0.2, 1)`
+- Keyframes:
+  - `toast-in` (slide-in + fade)
+  - `overlay-in` (fade)
+  - `modal-in` (scale + translate + fade)
+- Reduced motion support: `@media (prefers-reduced-motion: reduce)` disables
+  transitions/animations.
+
+## 2. Component Inventory
+
+Recurring UI components across pages:
+
+### 2.1 Shell and Navigation
+
+- App shell: `.app-layout`, fixed sidebar + main content.
+- Sidebar: `.sidebar`, `.sidebar-logo`, `.sidebar-nav`, `.nav-item`,
+  `.sidebar-user`.
+- Mobile sidebar overlay: `.sidebar-overlay`.
+- Header bar: `.header-bar`, `.hamburger-btn`, `.page-title`, `.last-updated`.
+
+### 2.2 Core UI Primitives
+
+- Buttons:
+  - Base: `.btn`
+  - Sizes: `.btn-sm`, `.btn-md`, `.btn-lg`
+  - Variants: `.btn-primary`, `.btn-secondary`, `.btn-success`, `.btn-warning`,
+    `.btn-danger`, `.btn-ghost`
+- Badges:
+  - Base: `.badge`
+  - Variants: `.badge-success`, `.badge-error`, `.badge-warning`,
+    `.badge-paused`, `.badge-running`
+- Card container:
+  - `.card`, `.card-header`, `.card-body`
+
+### 2.3 Dashboard Components (`dashboard.html`)
+
+- KPI stats grid: `.stats-grid`, `.stat-card`, `.stat-card-icon-*`,
+  `.stat-card-value`.
+- Execution log table: `.table-wrapper`, `.data-table`, `.detail-link`.
+- Pagination: `.pagination`, `.pagination-btn`.
+
+### 2.4 Workflow Components (`workflows.html`)
+
+- Workflow grid/cards: `.workflow-grid`, `.workflow-card`,
+  `.workflow-card-meta`, `.workflow-card-footer`.
+- LINE template editor block:
+  - `.line-reply-settings`, `.line-reply-current`, `.line-reply-editor`,
+    `.line-reply-preview`
+- Monthly recipient settings:
+  - `.recipient-settings`, `.recipient-settings-form`, `.recipient-list`,
+    `.recipient-list-item`
+- Confirmation modal:
+  - `.modal-overlay`, `.modal`, `.modal-title`, `.modal-actions`
+
+### 2.5 Support Components (`support.html`)
+
+- Two-column support layout: `.two-col-layout`
+- Form system:
+  - `.form-group`, `.form-label`, `.form-input`, `.form-select`,
+    `.form-textarea`, `.form-hint`, `.form-error`
+- File upload UI:
+  - `.file-input-wrapper`, `.file-input-label`
+- Inline success message: `.inline-success`
+- Ticket list and empty state:
+  - `.ticket-list`, `.ticket-item`, `.empty-state`
+
+### 2.6 Global Feedback
+
+- Toast system: `.toast-container`, `.toast`, `.toast-success`, `.toast-error`,
+  `.toast-warning`, `.toast-close`
+
+## 3. Page Layouts and Responsive Behavior
+
+### 3.1 Layout Grid System
+
+- Primary shell:
+  - Fixed sidebar width token: `--sidebar-width: 240px` (desktop)
+  - Content max width token: `--content-max-width: 1200px`
+  - Main content offset via `margin-left: var(--sidebar-width)`
+- Page content container:
+  - `.page-content` with fluid width up to max width
+- Local grids:
+  - Dashboard KPI: `grid-template-columns: repeat(4, 1fr)`
+  - Workflow cards: `repeat(2, 1fr)`
+  - Support page: `two-col-layout` uses `1fr 1fr`
+
+### 3.2 Breakpoints
+
+Defined in `style.css`:
+
+- `@media (max-width: 1023px)`:
+  - Sidebar collapsed to icon rail (`--sidebar-width: 64px`)
+  - Stats grid `4 -> 2`
+  - Workflow grid `2 -> 1`
+  - Support 2-column `-> 1`
+- `@media (max-width: 767px)`:
+  - Sidebar becomes off-canvas with hamburger toggle
+  - Main content margin removed
+  - Page/header paddings reduced
+  - Toast container spans mobile width
+- `@media (max-width: 479px)`:
+  - Stats grid `2 -> 1`
+  - Modal actions stack vertically
+
+### 3.3 Accessibility and Interaction Patterns
+
+- Focus style via `:focus-visible`.
+- Touch target intent present (`min-height: 44px`) on interactive controls.
+- ARIA usage in HTML for navigation, status, live regions, dialog semantics, and
+  labels.
+
+## 4. Asset Catalog
+
+### 4.1 Found Design Assets in Repository
+
+- External raster/vector/PDF design files: none found (`.pdf`, `.png`, `.jpg`,
+  `.jpeg`, `.svg`).
+- `designs/` directory: not found.
+
+### 4.2 In-Product Visual Assets
+
+- Icons are inline SVG blocks embedded directly in HTML templates.
+- No standalone icon sprite or illustration/image files are currently checked
+  in.
+
+## 5. Gaps and Next Required Inputs
+
+To complete the originally requested "analyze all files in `designs/`" workflow,
+provide or commit:
+
+- A `designs/` directory with source files (PDF/PNG/SVG/JPG)
+- Any Figma export references or naming map
+- Version/date metadata for each design artifact
+
+Once these are present, this spec should be extended with:
+
+- Token deltas between design source and implementation
+- Asset-by-asset catalog table (filename, type, dimensions, usage)
+- Per-page mapping from design frames to implemented pages

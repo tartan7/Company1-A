@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ナレッジ | UniteCube</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/site.css">
+</head>
+<body>
+<div class="site-shell">
+  <header class="site-header">
+    <div class="site-container site-header-inner">
+      <a class="site-logo" href="home.html" aria-label="UniteCube ホーム">
+        <span class="site-logo-mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+        </span>
+        <span>UniteCube</span>
+      </a>
+      <nav class="site-nav" data-site-nav aria-label="サイトナビゲーション" data-open="false">
+        <a class="site-nav-link" href="home.html">ホーム</a>
+        <a class="site-nav-link" href="solutions.html">導入プラン</a>
+        <a class="site-nav-link" href="industries.html">業種別活用</a>
+        <a class="site-nav-link active" href="insights.html" aria-current="page">ナレッジ</a>
+        <a class="site-nav-link" href="dashboard.html">ダッシュボード</a>
+      </nav>
+      <div class="site-header-actions">
+        <button class="site-menu-toggle" type="button" data-site-menu-toggle aria-expanded="false" aria-label="メニューを開く">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        </button>
+        <a class="btn btn-secondary btn-sm" href="support.html">問い合わせ</a>
+        <a class="btn btn-primary btn-sm" href="dashboard.html">ログイン</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="page-hero">
+      <div class="site-container">
+        <h1>運用ナレッジ</h1>
+        <p>導入後に成果が安定する企業が共通して実施している「運用ルールの最小セット」を公開しています。</p>
+      </div>
+    </section>
+
+    <section class="section" style="padding-top:0;">
+      <div class="site-container content-layout">
+        <article class="article">
+          <h2 id="section-1">1. まず最初に決めるべき3つ</h2>
+          <p>自動化を導入する際、最初に定義するべきは「誰が停止・再開を判断するか」「失敗時の一次対応時間」「運用変更の承認者」です。この3点が曖昧なままでは、機能が揃っていても定着率が下がります。</p>
+
+          <h2 id="section-2">2. KPIは作業量でなく再発率で見る</h2>
+          <p>初期フェーズでは処理件数の増減より、失敗の再発率に注目してください。月次レビューでは以下の3指標を推奨しています。</p>
+          <ul>
+            <li>同一エラーの再発率（前月比）</li>
+            <li>一次対応までの平均時間</li>
+            <li>手動作業へ戻した件数</li>
+          </ul>
+
+          <h2 id="section-3">3. 現場向け変更履歴を残す</h2>
+          <p>管理者向けの技術ログだけでなく、現場が読める言葉で変更履歴を残すことで問い合わせが減ります。例として「返信文言変更」「配信時間変更」「停止条件変更」を定型フォーマットで記録してください。</p>
+
+          <h2 id="section-4">4. 月次レビュー運用</h2>
+          <p>毎月のレビューでは、実行履歴から失敗傾向を洗い出し、翌月に実施する改善を3項目までに制限します。改善項目が増えすぎると実行率が下がるため、短いサイクルでの改善を優先します。</p>
+        </article>
+
+        <aside class="sticky-panel" aria-label="補助情報">
+          <div class="toc-card">
+            <h3>目次</h3>
+            <nav class="toc-list" aria-label="ページ内目次">
+              <a href="#section-1">1. 最初に決める3つ</a>
+              <a href="#section-2">2. KPI設定</a>
+              <a href="#section-3">3. 変更履歴</a>
+              <a href="#section-4">4. 月次レビュー</a>
+            </nav>
+          </div>
+          <div class="cta-card">
+            <h3>運用診断を依頼する</h3>
+            <p style="font-size:var(--font-size-sm);color:var(--color-neutral-700);margin-bottom:var(--spacing-4);">現在の運用フローを30分で診断し、優先度付きの改善案を返します。</p>
+            <a class="btn btn-primary btn-sm" href="support.html">診断を申し込む</a>
+          </div>
+        </aside>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="site-container site-footer-inner">
+      <div>
+        <p class="site-footer-meta">© <span data-current-year></span> UniteCube Inc.</p>
+        <p class="site-footer-meta">北海道稚内市 | 中小企業向け業務自動化支援</p>
+      </div>
+      <nav class="site-footer-links" aria-label="フッターナビゲーション">
+        <a href="home.html">ホーム</a>
+        <a href="solutions.html">導入プラン</a>
+        <a href="industries.html">業種別活用</a>
+        <a href="insights.html">ナレッジ</a>
+        <a href="support.html">お問い合わせ</a>
+      </nav>
+    </div>
+  </footer>
+</div>
+<script src="js/site.js"></script>
+</body>
+</html>

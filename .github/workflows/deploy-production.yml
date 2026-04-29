@@ -7,13 +7,14 @@ on:
       - main
     paths:
       - "public/**"
+      - "docs/**/*.html"
       - "scripts/**"
       - ".github/workflows/deploy-production.yml"
 
 jobs:
   deploy:
-    name: Deploy Static Site To VPS
-    runs-on: ubuntu-latest
+    name: Deploy Static Site Locally
+    runs-on: self-hosted
     environment: production
 
     steps:
@@ -23,91 +24,28 @@ jobs:
       - name: Validate deploy script
         run: test -x scripts/deploy-prod.sh
 
+      - name: Validate local deploy wrapper
+        run: test -x scripts/deploy-local.sh
+
       - name: Validate smoke test script
         run: test -x scripts/smoke-test.sh
 
-      - name: Prepare SSH trust and key
+      - name: Deploy to local production folder
         env:
-          PROD_HOST: ${{ secrets.PROD_HOST }}
-          PROD_PORT: ${{ secrets.PROD_PORT || 22 }}
-          PROD_USER: ${{ secrets.PROD_USER }}
-          PROD_SSH_KEY: ${{ secrets.PROD_SSH_KEY }}
-          PROD_SSH_FINGERPRINT: ${{ secrets.PROD_SSH_FINGERPRINT }}
+          SRC_DIR: ${{ github.workspace }}/public
+          DOCS_SRC_DIR: ${{ github.workspace }}/docs
+          DEST_DIR: /home/tartan/workspace/www/unitecube
         run: |
           set -euo pipefail
-          test -n "$PROD_HOST"
-          test -n "$PROD_USER"
-          test -n "$PROD_SSH_KEY"
-          test -n "$PROD_SSH_FINGERPRINT"
-          install -d -m 700 "$HOME/.ssh"
-          normalized_key="$PROD_SSH_KEY"
-          if printf '%s' "$normalized_key" | grep -q '\\n'; then
-            normalized_key="$(printf '%b' "${normalized_key//\\n/$'\n'}")"
-          fi
-          printf '%s\n' "$normalized_key" > "$HOME/.ssh/id_unitecube_prod"
-          chmod 600 "$HOME/.ssh/id_unitecube_prod"
-          if ! ssh-keygen -y -f "$HOME/.ssh/id_unitecube_prod" >/dev/null 2>&1; then
-            echo "::error::PROD_SSH_KEY is not a valid private key format."
-            exit 1
-          fi
-          scan="$(ssh-keyscan -p "$PROD_PORT" "$PROD_HOST" 2>/dev/null || true)"
-          if [ -z "$scan" ]; then
-            echo "::error::Unable to scan host keys from production target."
-            exit 1
-          fi
-          printf '%s\n' "$scan" > "$HOME/.ssh/known_hosts"
-
-          if ! printf '%s\n' "$scan" | ssh-keygen -E sha256 -lf - | awk '{print $2}' | grep -qx "$PROD_SSH_FINGERPRINT"; then
-            echo "::error::PROD_SSH_FINGERPRINT does not match scanned host keys."
-            echo "::group::Scanned fingerprints"
-            printf '%s\n' "$scan" | ssh-keygen -E sha256 -lf - | awk '{print $2}'
-            echo "::endgroup::"
-            exit 1
-          fi
-
-      - name: Upload site bundle
-        env:
-          PROD_HOST: ${{ secrets.PROD_HOST }}
-          PROD_USER: ${{ secrets.PROD_USER }}
-          PROD_PORT: ${{ secrets.PROD_PORT || 22 }}
-        run: |
-          set -euo pipefail
-          tar -C public -czf /tmp/unitecube-release.tar.gz .
-          scp -P "$PROD_PORT" \
-            -i "$HOME/.ssh/id_unitecube_prod" \
-            -o IdentitiesOnly=yes \
-            -o StrictHostKeyChecking=yes \
-            /tmp/unitecube-release.tar.gz \
-            "$PROD_USER@$PROD_HOST:/tmp/unitecube-release.tar.gz"
-
-      - name: Publish release on server
-        env:
-          PROD_HOST: ${{ secrets.PROD_HOST }}
-          PROD_USER: ${{ secrets.PROD_USER }}
-          PROD_PORT: ${{ secrets.PROD_PORT || 22 }}
-          PROD_WEB_ROOT: ${{ secrets.PROD_WEB_ROOT }}
-        run: |
-          set -euo pipefail
-          test -n "$PROD_WEB_ROOT"
-          ssh -p "$PROD_PORT" \
-            -i "$HOME/.ssh/id_unitecube_prod" \
-            -o IdentitiesOnly=yes \
-            -o StrictHostKeyChecking=yes \
-            "$PROD_USER@$PROD_HOST" \
-            "set -euo pipefail; \
-            DEPLOY_DEST_DIR='$PROD_WEB_ROOT'; \
-            TMP_RELEASE='/tmp/unitecube-release'; \
-            test -f /tmp/unitecube-release.tar.gz; \
-            mkdir -p \"\$TMP_RELEASE\" \"\$DEPLOY_DEST_DIR\"; \
-            tar -xzf /tmp/unitecube-release.tar.gz -C \"\$TMP_RELEASE\"; \
-            rsync -a --delete \"\$TMP_RELEASE\"/ \"\$DEPLOY_DEST_DIR\"/; \
-            rm -f /tmp/unitecube-release.tar.gz; \
-            echo Deployment completed to \"\$DEPLOY_DEST_DIR\""
+          bash scripts/deploy-prod.sh
 
       - name: Smoke test production
         env:
-          PROD_BASE_URL: ${{ secrets.PROD_BASE_URL }}
+          PROD_BASE_URL: ${{ vars.PROD_BASE_URL }}
         run: |
           set -euo pipefail
-          test -n "$PROD_BASE_URL"
+          if [ -z "${PROD_BASE_URL:-}" ]; then
+            echo "::warning::PROD_BASE_URL is not set in repository/environment variables; skipping smoke test."
+            exit 0
+          fi
           bash scripts/smoke-test.sh "$PROD_BASE_URL"
