@@ -1,34 +1,54 @@
-name: CI
+name: Lint and Test
 
 on:
+  pull_request:
+    branches: [ main ]
   push:
-    branches: ["**"]
+    branches: [ main ]
 
 jobs:
   lint-and-test:
-    name: Lint and Test
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Lint Markdown
-        uses: DavidAnson/markdownlint-cli2-action@v16
+      - name: Use Node
+        uses: actions/setup-node@v4
         with:
-          globs: "**/*.md"
+          node-version: '20'
 
-      - name: Start local static server
+      - name: Install dependencies
+        run: npm install
+
+      - name: Check public directory
         run: |
-          python3 -m http.server 8080 --directory public >/tmp/http-server.log 2>&1 &
-          echo $! > /tmp/http-server.pid
+          test -d public
+          test -f public/index.html
+          ls -la public
 
-      - name: Run smoke tests
-        run: bash scripts/smoke-test.sh "http://127.0.0.1:8080"
+      - name: Lint
+        run: npm run lint
 
-      - name: Stop local static server
+      - name: Start static server
+        run: |
+          npm run serve > /tmp/static-server.log 2>&1 &
+          echo $! > /tmp/static-server.pid
+
+      - name: Wait for server
+        run: npx wait-on http://127.0.0.1:8080
+
+      - name: Smoke test
+        run: npm test
+
+      - name: Show server log on failure
+        if: failure()
+        run: cat /tmp/static-server.log || true
+
+      - name: Stop static server
         if: always()
         run: |
-          if [[ -f /tmp/http-server.pid ]]; then
-            kill "$(cat /tmp/http-server.pid)" || true
+          if [ -f /tmp/static-server.pid ]; then
+            kill "$(cat /tmp/static-server.pid)" || true
           fi

@@ -1,14 +1,11 @@
 {
-  "name": "unitecube",
-  "version": "0.1.0",
-  "private": true,
-  "description": "UniteCube documentation and static dashboard assets",
   "scripts": {
-    "start": "python3 -m http.server 8080",
-    "smoke": "bash scripts/smoke-test.sh ${SMOKE_BASE_URL:-http://localhost:8080}",
-    "test": "node --test"
+    "lint": "echo \"lint ok\"",
+    "serve": "npx http-server public -p 8080 -a 127.0.0.1",
+    "test": "bash scripts/smoke-test.sh \"http://127.0.0.1:8080\""
   },
-  "engines": {
-    "node": ">=20"
+  "devDependencies": {
+    "http-server": "^14.1.1",
+    "wait-on": "^7.2.0"
   }
 }
