@@ -4,9 +4,21 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ワークフロー設定 — UniteCube クライアントダッシュボード</title>
+  <meta name="description" content="UniteCubeのワークフロー設定ページ。業務自動化ワークフローの稼働状況確認、一時停止、再開を行えます。">
+  <meta name="robots" content="index,follow">
+  <link rel="canonical" href="https://unitecube.jp/workflows.html">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="ja_JP">
+  <meta property="og:site_name" content="UniteCube">
+  <meta property="og:title" content="ワークフロー設定 — UniteCube クライアントダッシュボード">
+  <meta property="og:description" content="ワークフローの稼働状況確認、一時停止、再開を管理。">
+  <meta property="og:url" content="https://unitecube.jp/workflows.html">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="ワークフロー設定 — UniteCube">
+  <meta name="twitter:description" content="ワークフローの稼働状況確認、一時停止、再開を管理。">
   <link rel="stylesheet" href="css/style.css">
 </head>
-<body>
+<body data-current-user-role="admin" data-monthly-recipient-cap="10">
 <div class="app-layout">
 
   <!-- ── サイドバーオーバーレイ（モバイル）── -->
@@ -49,15 +61,15 @@
     </div>
 
     <div class="sidebar-user">
-      <p class="sidebar-user-name">株式会社サンプル商事</p>
-      <a href="#" class="sidebar-user-logout" aria-label="ログアウト">
+      <p class="sidebar-user-name">運用管理アカウント</p>
+      <button type="button" class="sidebar-user-logout" aria-label="ログアウト" data-action="logout">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/>
           <polyline points="16 17 21 12 16 7"/>
           <line x1="21" y1="12" x2="9" y2="12"/>
         </svg>
         <span>ログアウト</span>
-      </a>
+      </button>
     </div>
   </nav>
 
@@ -76,11 +88,16 @@
         <h1 class="page-title">ワークフロー設定</h1>
       </div>
       <div class="header-right">
-        <span class="last-updated">最終更新: 2分前</span>
+        <span class="last-updated">変更内容は保存後すぐに反映されます</span>
       </div>
     </header>
 
     <main class="page-content" id="main-content">
+      <section aria-label="ページ説明" style="margin-bottom:var(--spacing-6);">
+        <p class="form-hint" style="margin:0;">
+          重要な業務ワークフローの稼働状況を確認し、必要なときだけ安全に停止・再開できます。停止時の影響は確認モーダルで必ずご案内します。
+        </p>
+      </section>
 
       <div class="workflow-grid" id="workflowGrid">
 
@@ -101,10 +118,31 @@
             </svg>
           </div>
           <p style="font-size:var(--font-size-sm);color:var(--color-neutral-500);margin-bottom:var(--spacing-4);">
-            LINE Messaging API Webhookで受信したメッセージをDify AIで処理し、自動返信します。
+            受信したお問い合わせへ初回返信を自動送信し、対応の遅れを防ぎます。営業時間外も一次回答を維持できます。
           </p>
+          <section class="line-reply-settings" aria-label="LINE自動返信文設定">
+            <div class="line-reply-settings-header">
+              <h3 class="line-reply-settings-title">自動返信テンプレート</h3>
+              <button type="button" class="btn btn-secondary btn-sm" id="lineReplyEditBtn">テンプレートを編集</button>
+            </div>
+            <p class="line-reply-settings-hint">利用可能な差し込み項目: <code>{{customer_name}}</code> / <code>{{reservation_date}}</code> / <code>{{inquiry_summary}}</code></p>
+            <div class="line-reply-current" id="lineReplyCurrent" aria-live="polite"></div>
+            <div class="line-reply-editor hidden" id="lineReplyEditor">
+              <label class="form-label" for="lineReplyTemplateInput">返信テンプレート（500文字以内・改行可）</label>
+              <textarea class="form-textarea" id="lineReplyTemplateInput" rows="5"></textarea>
+              <div class="line-reply-editor-meta">
+                <p class="form-error hidden" id="lineReplyTemplateError"></p>
+                <p class="form-hint" id="lineReplyTemplateCounter">0 / 500</p>
+              </div>
+              <div class="line-reply-preview" id="lineReplyPreview"></div>
+              <div class="line-reply-editor-actions">
+                <button type="button" class="btn btn-primary btn-sm" id="lineReplySaveBtn">保存</button>
+                <button type="button" class="btn btn-secondary btn-sm" id="lineReplyCancelBtn">キャンセル</button>
+              </div>
+            </div>
+          </section>
           <div class="workflow-card-footer">
-            <button class="btn btn-warning btn-md" data-workflow-id="1" data-workflow-name="LINE 問い合わせ自動返信" data-action="pause" onclick="openModal(this)">
+            <button type="button" class="btn btn-warning btn-md" data-workflow-id="1" data-workflow-name="LINE 問い合わせ自動返信" data-action="pause">
               <!-- pause icon -->
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                 <circle cx="12" cy="12" r="10"/>
@@ -132,10 +170,32 @@
             </svg>
           </div>
           <p style="font-size:var(--font-size-sm);color:var(--color-neutral-500);margin-bottom:var(--spacing-4);">
-            Googleスプレッドシートからデータを取得し、Excelレポートを生成してメール送信します。毎月1日に自動実行されます。
+            月初に前月データを集計し、関係者へレポートを自動配信します。報告漏れ防止と確認工数の削減に役立ちます。
           </p>
+          <section class="recipient-settings" aria-labelledby="monthlyRecipientsTitle">
+            <div class="recipient-settings-header">
+              <h3 class="recipient-settings-title" id="monthlyRecipientsTitle">レポート送信先</h3>
+              <p class="recipient-settings-count" id="monthlyRecipientCount" aria-live="polite"></p>
+            </div>
+            <form id="monthlyRecipientForm" class="recipient-settings-form" novalidate>
+              <label class="visually-hidden" for="monthlyRecipientInput">追加するメールアドレス</label>
+              <input
+                type="email"
+                id="monthlyRecipientInput"
+                class="form-input"
+                placeholder="report@example.co.jp"
+                inputmode="email"
+                autocomplete="email"
+                aria-describedby="monthlyRecipientError monthlyRecipientHint"
+              >
+              <button type="submit" class="btn btn-primary btn-sm" id="monthlyRecipientAddBtn">追加</button>
+            </form>
+            <p class="form-hint" id="monthlyRecipientHint">同一メールは重複登録できません。最大10件まで登録できます。</p>
+            <p class="form-error hidden" id="monthlyRecipientError" role="alert"></p>
+            <ul class="recipient-list" id="monthlyRecipientList"></ul>
+          </section>
           <div class="workflow-card-footer">
-            <button class="btn btn-warning btn-md" data-workflow-id="2" data-workflow-name="月次レポート自動生成" data-action="pause" onclick="openModal(this)">
+            <button type="button" class="btn btn-warning btn-md" data-workflow-id="2" data-workflow-name="月次レポート自動生成" data-action="pause">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                 <circle cx="12" cy="12" r="10"/>
                 <line x1="10" y1="15" x2="10" y2="9"/>
@@ -162,10 +222,10 @@
             </svg>
           </div>
           <p style="font-size:var(--font-size-sm);color:var(--color-neutral-500);margin-bottom:var(--spacing-4);">
-            WordPress Contact Form 7のWebhookを受信し、問い合わせを分類して自動返信メールを送信します。
+            Webフォームの新規問い合わせを自動で分類し、担当チームへ振り分けます。優先度の高い案件を見逃しにくくします。
           </p>
           <div class="workflow-card-footer">
-            <button class="btn btn-warning btn-md" data-workflow-id="3" data-workflow-name="Webフォーム問い合わせ処理" data-action="pause" onclick="openModal(this)">
+            <button type="button" class="btn btn-warning btn-md" data-workflow-id="3" data-workflow-name="Webフォーム問い合わせ処理" data-action="pause">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                 <circle cx="12" cy="12" r="10"/>
                 <line x1="10" y1="15" x2="10" y2="9"/>
@@ -194,10 +254,10 @@
             </svg>
           </div>
           <p style="font-size:var(--font-size-sm);color:var(--color-neutral-500);margin-bottom:var(--spacing-4);">
-            顧客データをGoogleスプレッドシートと双方向同期します。認証エラーのため一時停止中です。
+            顧客データをGoogleスプレッドシートと同期します。現在は認証エラーのため停止中で、再開前に連携アカウントの再認証が必要です。
           </p>
           <div class="workflow-card-footer">
-            <button class="btn btn-success btn-md" data-workflow-id="4" data-workflow-name="Googleスプレッドシート同期" data-action="resume" onclick="openModal(this)">
+            <button type="button" class="btn btn-success btn-md" data-workflow-id="4" data-workflow-name="Googleスプレッドシート同期" data-action="resume">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                 <circle cx="12" cy="12" r="10"/>
                 <polygon points="10 8 16 12 10 16 10 8"/>
@@ -214,15 +274,15 @@
 </div><!-- /.app-layout -->
 
 <!-- ── 確認モーダル ── -->
-<div class="modal-overlay" id="confirmModal" hidden role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+<div class="modal-overlay" id="confirmModal" hidden role="dialog" aria-modal="true" aria-labelledby="modalTitle" aria-describedby="modalBody" aria-hidden="true">
   <div class="modal" id="modalPanel">
-    <h2 class="modal-title" id="modalTitle">ワークフローを一時停止しますか？</h2>
+    <h2 class="modal-title" id="modalTitle">このワークフローを一時停止しますか？</h2>
     <p class="modal-body" id="modalBody">
-      「LINE 問い合わせ自動返信」を一時停止します。停止中は自動処理が行われなくなります。
+      「LINE 問い合わせ自動返信」を一時停止します。停止中は対象業務の自動処理が実行されません。
     </p>
     <div class="modal-actions">
-      <button class="btn btn-secondary btn-md" id="modalCancel" onclick="closeModal()">キャンセル</button>
-      <button class="btn btn-primary btn-md" id="modalConfirm" onclick="confirmAction()">確認</button>
+      <button type="button" class="btn btn-secondary btn-md" id="modalCancel">キャンセル</button>
+      <button type="button" class="btn btn-primary btn-md" id="modalConfirm">確認</button>
     </div>
   </div>
 </div>
@@ -230,185 +290,8 @@
 <!-- ── トースト通知コンテナ ── -->
 <div class="toast-container" id="toastContainer" aria-live="polite" aria-atomic="false"></div>
 
-<script>
-  // ── ハンバーガーメニュー ──
-  const hamburgerBtn = document.getElementById('hamburgerBtn');
-  const sidebar      = document.getElementById('sidebar');
-  const overlay      = document.getElementById('sidebarOverlay');
-
-  hamburgerBtn.addEventListener('click', () => {
-    const isOpen = sidebar.classList.contains('open');
-    sidebar.classList.toggle('open');
-    overlay.classList.toggle('open');
-    overlay.setAttribute('aria-hidden', isOpen ? 'true' : 'false');
-    hamburgerBtn.setAttribute('aria-expanded', isOpen ? 'false' : 'true');
-  });
-  overlay.addEventListener('click', () => {
-    sidebar.classList.remove('open');
-    overlay.classList.remove('open');
-    overlay.setAttribute('aria-hidden', 'true');
-    hamburgerBtn.setAttribute('aria-expanded', 'false');
-  });
-
-  // ── モーダル ──
-  let currentAction = null;
-  let currentWorkflowId = null;
-  let currentTriggerBtn = null;
-
-  const confirmModal  = document.getElementById('confirmModal');
-  const modalTitle    = document.getElementById('modalTitle');
-  const modalBody     = document.getElementById('modalBody');
-  const modalConfirm  = document.getElementById('modalConfirm');
-  // フォーカストラップ用
-  const focusableSelectors = 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
-
-  function openModal(triggerBtn) {
-    const action = triggerBtn.dataset.action;
-    const name   = triggerBtn.dataset.workflowName;
-    currentAction      = action;
-    currentWorkflowId  = triggerBtn.dataset.workflowId;
-    currentTriggerBtn  = triggerBtn;
-
-    if (action === 'pause') {
-      modalTitle.textContent   = 'ワークフローを一時停止しますか？';
-      modalBody.textContent    = `「${name}」を一時停止します。停止中は自動処理が行われなくなります。`;
-      modalConfirm.className   = 'btn btn-warning btn-md';
-      modalConfirm.textContent = '一時停止する';
-    } else {
-      modalTitle.textContent   = 'ワークフローを再開しますか？';
-      modalBody.textContent    = `「${name}」を再開します。設定された条件で自動処理を再開します。`;
-      modalConfirm.className   = 'btn btn-success btn-md';
-      modalConfirm.textContent = '再開する';
-    }
-
-    confirmModal.hidden = false;
-    document.body.style.overflow = 'hidden';
-
-    // フォーカストラップ: 最初のフォーカス可能な要素へ
-    const focusable = confirmModal.querySelectorAll(focusableSelectors);
-    if (focusable.length) focusable[0].focus();
-  }
-
-  function closeModal() {
-    confirmModal.hidden = true;
-    document.body.style.overflow = '';
-    if (currentTriggerBtn) currentTriggerBtn.focus();
-  }
-
-  function confirmAction() {
-    closeModal();
-
-    const card = document.querySelector(`[data-workflow-id="${currentWorkflowId}"]`).closest('.workflow-card');
-
-    if (currentAction === 'pause') {
-      // バッジをステータス変更
-      const badge = card.querySelector('.badge');
-      badge.className = 'badge badge-paused';
-      badge.textContent = '停止中';
-      badge.setAttribute('aria-label', 'ステータス：停止中');
-
-      // ヘッダーアイコン差し替え
-      card.querySelector('.workflow-card-header > svg').setAttribute('stroke', 'var(--color-paused)');
-
-      // ボタンを再開に
-      const btn = card.querySelector('button');
-      btn.className = 'btn btn-success btn-md';
-      btn.dataset.action = 'resume';
-      btn.onclick = () => openModal(btn);
-      btn.innerHTML = `
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <circle cx="12" cy="12" r="10"/>
-          <polygon points="10 8 16 12 10 16 10 8"/>
-        </svg>
-        再開`;
-
-      showToast('warning', 'ワークフローを一時停止しました', `「${btn.dataset.workflowName}」の自動処理を停止しました。`);
-    } else {
-      const badge = card.querySelector('.badge');
-      badge.className = 'badge badge-success';
-      badge.textContent = '稼働中';
-      badge.setAttribute('aria-label', 'ステータス：稼働中');
-
-      card.querySelector('.workflow-card-header > svg').setAttribute('stroke', 'var(--color-success)');
-
-      const btn = card.querySelector('button');
-      btn.className = 'btn btn-warning btn-md';
-      btn.dataset.action = 'pause';
-      btn.onclick = () => openModal(btn);
-      btn.innerHTML = `
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <circle cx="12" cy="12" r="10"/>
-          <line x1="10" y1="15" x2="10" y2="9"/>
-          <line x1="14" y1="15" x2="14" y2="9"/>
-        </svg>
-        一時停止`;
-
-      showToast('success', 'ワークフローを再開しました', `「${btn.dataset.workflowName}」の自動処理を再開しました。`);
-    }
-  }
-
-  // Escキーでモーダルを閉じる
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && !confirmModal.hidden) closeModal();
-  });
-
-  // オーバーレイクリックで閉じる
-  confirmModal.addEventListener('click', (e) => {
-    if (e.target === confirmModal) closeModal();
-  });
-
-  // フォーカストラップ
-  confirmModal.addEventListener('keydown', (e) => {
-    if (e.key !== 'Tab') return;
-    const focusable = Array.from(confirmModal.querySelectorAll(focusableSelectors));
-    const first = focusable[0];
-    const last  = focusable[focusable.length - 1];
-    if (e.shiftKey) {
-      if (document.activeElement === first) { e.preventDefault(); last.focus(); }
-    } else {
-      if (document.activeElement === last) { e.preventDefault(); first.focus(); }
-    }
-  });
-
-  // ── トースト ──
-  function showToast(type, title, text) {
-    const container = document.getElementById('toastContainer');
-    const icons = {
-      success: '<svg class="toast-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>',
-      warning: '<svg class="toast-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>',
-      error:   '<svg class="toast-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>',
-    };
-
-    // 最大3件
-    const existing = container.querySelectorAll('.toast');
-    if (existing.length >= 3) existing[0].remove();
-
-    const toast = document.createElement('div');
-    toast.className = `toast toast-${type}`;
-    toast.setAttribute('role', 'alert');
-    toast.innerHTML = `
-      ${icons[type] || ''}
-      <div class="toast-body">
-        <div class="toast-title">${title}</div>
-        ${text ? `<div class="toast-text">${text}</div>` : ''}
-      </div>
-      <button class="toast-close" aria-label="通知を閉じる">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-      </button>`;
-
-    toast.querySelector('.toast-close').addEventListener('click', () => removeToast(toast));
-    container.appendChild(toast);
-
-    const duration = type === 'error' ? 6000 : 3000;
-    setTimeout(() => removeToast(toast), duration);
-  }
-
-  function removeToast(toast) {
-    toast.style.transition = 'opacity 200ms ease, transform 200ms ease';
-    toast.style.opacity = '0';
-    toast.style.transform = 'translateX(100%)';
-    setTimeout(() => toast.remove(), 200);
-  }
-</script>
+<script src="js/core.js"></script>
+<script src="js/workflows.js"></script>
+<script src="js/analytics.js" defer data-analytics-endpoint="/api/analytics/events"></script>
 </body>
 </html>

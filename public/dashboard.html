@@ -4,6 +4,18 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>実行履歴 — UniteCube クライアントダッシュボード</title>
+  <meta name="description" content="UniteCubeの実行履歴ページ。ワークフローの実行状況、成功率、失敗件数を確認できます。">
+  <meta name="robots" content="index,follow">
+  <link rel="canonical" href="https://unitecube.jp/dashboard.html">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="ja_JP">
+  <meta property="og:site_name" content="UniteCube">
+  <meta property="og:title" content="実行履歴 — UniteCube クライアントダッシュボード">
+  <meta property="og:description" content="ワークフローの実行ログ、成功率、失敗件数をダッシュボードで確認。">
+  <meta property="og:url" content="https://unitecube.jp/dashboard.html">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="実行履歴 — UniteCube">
+  <meta name="twitter:description" content="ワークフローの実行ログ、成功率、失敗件数を確認。">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -54,7 +66,7 @@
 
     <div class="sidebar-user">
       <p class="sidebar-user-name">株式会社サンプル商事</p>
-      <a href="#" class="sidebar-user-logout" aria-label="ログアウト">
+      <button type="button" class="sidebar-user-logout" aria-label="ログアウト" data-action="logout">
         <!-- logout icon -->
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/>
@@ -62,7 +74,7 @@
           <line x1="21" y1="12" x2="9" y2="12"/>
         </svg>
         <span>ログアウト</span>
-      </a>
+      </button>
     </div>
   </nav>
 
@@ -110,8 +122,8 @@
                 </svg>
               </div>
             </div>
-            <div class="stat-card-value">142</div>
-            <div class="stat-card-sub positive">前週比 +12%</div>
+            <div class="stat-card-value" id="summary-total">142</div>
+            <div class="stat-card-sub positive" id="summary-total-sub">前週比 +12%</div>
           </div>
 
           <div class="stat-card">
@@ -124,8 +136,8 @@
                 </svg>
               </div>
             </div>
-            <div class="stat-card-value">94.4%</div>
-            <div class="stat-card-sub">134件成功 / 8件失敗</div>
+            <div class="stat-card-value" id="summary-success-rate">94.4%</div>
+            <div class="stat-card-sub" id="summary-success-sub">134件成功 / 8件失敗</div>
           </div>
 
           <div class="stat-card">
@@ -139,8 +151,8 @@
                 </svg>
               </div>
             </div>
-            <div class="stat-card-value">8</div>
-            <div class="stat-card-sub negative">前週比 +2件</div>
+            <div class="stat-card-value" id="summary-error-count">8</div>
+            <div class="stat-card-sub negative" id="summary-error-sub">前週比 +2件</div>
           </div>
 
           <div class="stat-card">
@@ -153,8 +165,8 @@
                 </svg>
               </div>
             </div>
-            <div class="stat-card-value">稼働中</div>
-            <div class="stat-card-sub">3ワークフロー 有効</div>
+            <div class="stat-card-value" id="summary-workflow-status">稼働中</div>
+            <div class="stat-card-sub" id="summary-workflow-sub">3ワークフロー 有効</div>
           </div>
 
         </div>
@@ -190,7 +202,7 @@
                   <th scope="col"><span class="visually-hidden">詳細</span></th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody id="logTableBody">
                 <tr>
                   <td class="col-datetime">2026/04/22 19:45</td>
                   <td class="col-workflow">LINE 問い合わせ自動返信</td>
@@ -210,10 +222,10 @@
                   <td class="col-workflow">Google スプレッドシート同期</td>
                   <td><span class="badge badge-error" aria-label="ステータス：失敗">失敗</span></td>
                   <td class="col-duration">2.1秒</td>
-                  <td><a href="#" class="detail-link">
+                  <td><button type="button" class="detail-link" aria-label="実行ログ詳細を表示">
                     詳細
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
-                  </a></td>
+                  </button></td>
                 </tr>
                 <tr>
                   <td class="col-datetime">2026/04/22 18:30</td>
@@ -227,10 +239,10 @@
                   <td class="col-workflow">Webフォーム問い合わせ処理</td>
                   <td><span class="badge badge-warning" aria-label="ステータス：警告">警告</span></td>
                   <td class="col-duration">3.7秒</td>
-                  <td><a href="#" class="detail-link">
+                  <td><button type="button" class="detail-link" aria-label="実行ログ詳細を表示">
                     詳細
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
-                  </a></td>
+                  </button></td>
                 </tr>
                 <tr>
                   <td class="col-datetime">2026/04/22 16:45</td>
@@ -265,26 +277,26 @@
                   <td class="col-workflow">LINE 問い合わせ自動返信</td>
                   <td><span class="badge badge-error" aria-label="ステータス：失敗">失敗</span></td>
                   <td class="col-duration">0.3秒</td>
-                  <td><a href="#" class="detail-link">
+                  <td><button type="button" class="detail-link" aria-label="実行ログ詳細を表示">
                     詳細
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
-                  </a></td>
+                  </button></td>
                 </tr>
               </tbody>
             </table>
           </div>
 
           <!-- ページネーション -->
-          <nav class="pagination" aria-label="ページネーション">
-            <a href="#" class="pagination-btn" aria-label="前のページ" aria-disabled="true">
+          <nav class="pagination" id="logPagination" aria-label="ページネーション">
+            <button type="button" class="pagination-btn" aria-label="前のページ" aria-disabled="true" disabled>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>
-            </a>
-            <a href="#" class="pagination-btn active" aria-label="1ページ目（現在のページ）" aria-current="page">1</a>
-            <a href="#" class="pagination-btn" aria-label="2ページ目">2</a>
-            <a href="#" class="pagination-btn" aria-label="3ページ目">3</a>
-            <a href="#" class="pagination-btn" aria-label="次のページ">
+            </button>
+            <button type="button" class="pagination-btn active" aria-label="1ページ目（現在のページ）" aria-current="page">1</button>
+            <button type="button" class="pagination-btn" aria-label="2ページ目">2</button>
+            <button type="button" class="pagination-btn" aria-label="3ページ目">3</button>
+            <button type="button" class="pagination-btn" aria-label="次のページ">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
-            </a>
+            </button>
           </nav>
         </div>
       </section>
@@ -296,76 +308,8 @@
 <!-- ── トースト通知コンテナ ── -->
 <div class="toast-container" id="toastContainer" aria-live="polite" aria-atomic="false"></div>
 
-<script>
-  // ── ハンバーガーメニュー ──
-  const hamburgerBtn = document.getElementById('hamburgerBtn');
-  const sidebar      = document.getElementById('sidebar');
-  const overlay      = document.getElementById('sidebarOverlay');
-
-  function openSidebar() {
-    sidebar.classList.add('open');
-    overlay.classList.add('open');
-    overlay.setAttribute('aria-hidden', 'false');
-    hamburgerBtn.setAttribute('aria-expanded', 'true');
-  }
-
-  function closeSidebar() {
-    sidebar.classList.remove('open');
-    overlay.classList.remove('open');
-    overlay.setAttribute('aria-hidden', 'true');
-    hamburgerBtn.setAttribute('aria-expanded', 'false');
-  }
-
-  hamburgerBtn.addEventListener('click', () => {
-    if (sidebar.classList.contains('open')) {
-      closeSidebar();
-    } else {
-      openSidebar();
-    }
-  });
-
-  overlay.addEventListener('click', closeSidebar);
-
-  // ── 更新ボタン ──
-  document.getElementById('refreshBtn').addEventListener('click', function() {
-    showToast('success', 'データを更新しました', '実行ログが最新の状態になりました');
-    document.getElementById('lastUpdated').textContent = '最終更新: たった今';
-  });
-
-  // ── トースト ──
-  function showToast(type, title, text) {
-    const container = document.getElementById('toastContainer');
-    const icons = {
-      success: '<svg class="toast-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>',
-      error:   '<svg class="toast-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>',
-      warning: '<svg class="toast-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>',
-    };
-    const toast = document.createElement('div');
-    toast.className = `toast toast-${type}`;
-    toast.setAttribute('role', 'alert');
-    toast.innerHTML = `
-      ${icons[type] || ''}
-      <div class="toast-body">
-        <div class="toast-title">${title}</div>
-        ${text ? `<div class="toast-text">${text}</div>` : ''}
-      </div>
-      <button class="toast-close" aria-label="通知を閉じる">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-      </button>`;
-
-    toast.querySelector('.toast-close').addEventListener('click', () => removeToast(toast));
-    container.appendChild(toast);
-
-    const duration = type === 'error' ? 6000 : 3000;
-    setTimeout(() => removeToast(toast), duration);
-  }
-
-  function removeToast(toast) {
-    toast.style.transition = 'opacity 200ms ease, transform 200ms ease';
-    toast.style.opacity = '0';
-    toast.style.transform = 'translateX(100%)';
-    setTimeout(() => toast.remove(), 200);
-  }
-</script>
+<script src="js/core.js"></script>
+<script src="js/dashboard.js"></script>
+<script src="js/analytics.js" defer data-analytics-endpoint="/api/analytics/events"></script>
 </body>
 </html>
