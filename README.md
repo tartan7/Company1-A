@@ -5,6 +5,7 @@ This repository contains the documentation and public dashboard assets.
 
 Paperclip recovery smoke test
 Paperclip GitHub auth smoke test
+Paperclip automated PR smoke test
 
 ## Documentation
 
