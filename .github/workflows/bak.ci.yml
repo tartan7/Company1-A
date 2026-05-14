@@ -1,0 +1,34 @@
+name: CI
+
+on:
+  push:
+    branches: ["**"]
+
+jobs:
+  lint-and-test:
+    name: Lint and Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Lint Markdown
+        uses: DavidAnson/markdownlint-cli2-action@v16
+        with:
+          globs: "**/*.md"
+
+      - name: Start local static server
+        run: |
+          python3 -m http.server 8080 --directory public >/tmp/http-server.log 2>&1 &
+          echo $! > /tmp/http-server.pid
+
+      - name: Run smoke tests
+        run: bash scripts/smoke-test.sh "http://127.0.0.1:8080"
+
+      - name: Stop local static server
+        if: always()
+        run: |
+          if [[ -f /tmp/http-server.pid ]]; then
+            kill "$(cat /tmp/http-server.pid)" || true
+          fi

@@ -1,0 +1,28 @@
+<svg width="1200" height="800" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="1200" height="800" fill="#F9FAFB"/>
+  
+  <!-- Sidebar -->
+  <rect x="0" y="0" width="240" height="800" fill="#0F172A"/>
+  <text x="120" y="40" font-family="Noto Sans JP" font-size="20" fill="white" text-anchor="middle">UniteCube</text>
+  
+  <!-- Main content area -->
+  <rect x="240" y="0" width="960" height="800" fill="#F3F4F6"/>
+  
+  <!-- Header -->
+  <rect x="240" y="0" width="960" height="64" fill="white"/>
+  <text x="280" y="40" font-family="Noto Sans JP" font-size="24" fill="#111827">ダッシュボード</text>
+  
+  <!-- Stats cards -->
+  <rect x="280" y="100" width="200" height="120" rx="8" fill="white" stroke="#D1D5DB"/>
+  <text x="380" y="160" font-family="Noto Sans JP" font-size="32" fill="#2563EB" text-anchor="middle">1,234</text>
+  <text x="380" y="190" font-family="Noto Sans JP" font-size="14" fill="#6B7280" text-anchor="middle">アクティブなワークフロー</text>
+  
+  <rect x="500" y="100" width="200" height="120" rx="8" fill="white" stroke="#D1D5DB"/>
+  <rect x="720" y="100" width="200" height="120" rx="8" fill="white" stroke="#D1D5DB"/>
+  <rect x="940" y="100" width="200" height="120" rx="8" fill="white" stroke="#D1D5DB"/>
+  
+  <!-- Table area -->
+  <rect x="280" y="260" width="880" height="400" rx="8" fill="white" stroke="#D1D5DB"/>
+  <text x="300" y="290" font-family="Noto Sans JP" font-size="18" fill="#111827">実行ログ</text>
+</svg>

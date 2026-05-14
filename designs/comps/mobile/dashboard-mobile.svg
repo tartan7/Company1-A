@@ -1,0 +1,7 @@
+<svg width="375" height="812" xmlns="http://www.w3.org/2000/svg">
+  <rect width="375" height="812" fill="#F9FAFB"/>
+  <rect x="0" y="0" width="375" height="64" fill="#0F172A"/>
+  <text x="187.5" y="40" font-family="Noto Sans JP" font-size="18" fill="white" text-anchor="middle">UniteCube</text>
+  <text x="20" y="100" font-family="Noto Sans JP" font-size="20" fill="#111827">ダッシュボード</text>
+  <rect x="20" y="120" width="335" height="100" rx="8" fill="white" stroke="#D1D5DB"/>
+</svg>

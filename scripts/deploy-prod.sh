@@ -3,9 +3,10 @@ set -euo pipefail
 
 echo "Deploying local production..."
 
-SRC_DIR="${SRC_DIR:-/home/tartan/workspace/repo/public}"
-DOCS_SRC_DIR="${DOCS_SRC_DIR:-/home/tartan/workspace/repo/docs}"
-DEST_DIR="${DEST_DIR:-/home/tartan/workspace/www/unitecube}"
+# Docker container paths (host /workspace/* mounted to /workspace/* in container)
+SRC_DIR="${SRC_DIR:-/workspace/repo/public}"
+DOCS_SRC_DIR="${DOCS_SRC_DIR:-/workspace/repo/docs}"
+DEST_DIR="${DEST_DIR:-/workspace/www/unitecube}"
 
 if [[ ! -d "$SRC_DIR" ]]; then
   echo "Source directory not found: $SRC_DIR" >&2
