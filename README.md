@@ -4,6 +4,7 @@ UniteCube provides business process automation services for SMBs in Hokkaido.
 This repository contains the documentation and public dashboard assets.
 
 Paperclip recovery smoke test
+Paperclip GitHub auth smoke test
 
 ## Documentation
 
