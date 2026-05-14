@@ -3,7 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="UniteCubeは北海道の中小企業向けに、LINE対応・帳票作成・問い合わせ処理を1つの運用基盤に統合する業務自動化サービスです。">
   <title>UniteCube | 北海道の中小企業向け業務自動化</title>
+  <!-- Preconnect to Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- Load fonts with swap strategy -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Noto+Sans+Mono:wght@400;500&display=swap">
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/site.css">
 </head>
@@ -28,7 +34,8 @@
 
       <div class="site-header-actions">
         <button class="site-menu-toggle" type="button" data-site-menu-toggle aria-expanded="false" aria-label="メニューを開く">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+          <svg class="icon-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+          <svg class="icon-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
         </button>
         <a class="btn btn-secondary btn-sm" href="support.html">問い合わせ</a>
         <a class="btn btn-primary btn-sm" href="dashboard.html">ログイン</a>
@@ -43,14 +50,14 @@
           <span class="hero-label">Automation for Local Business</span>
           <h1>定型業務を削減し、現場の時間を毎月30時間取り戻す。</h1>
           <p>UniteCubeは北海道の中小企業向けに、LINE対応・帳票作成・問い合わせ処理を1つの運用基盤に統合します。現場が使える運用設計まで含めて導入します。</p>
-          <div style="display:flex;gap:var(--spacing-3);flex-wrap:wrap;">
+          <div class="hero-actions">
             <a class="btn btn-primary btn-md" href="solutions.html">導入プランを見る</a>
             <a class="btn btn-secondary btn-md" href="insights.html">運用ガイドを読む</a>
           </div>
         </div>
 
         <aside class="hero-card" aria-label="導入効果のサマリー">
-          <h2 style="font-size:var(--font-size-lg);margin-bottom:var(--spacing-4);">導入後90日の平均</h2>
+          <h2 class="hero-card-heading">導入後90日の平均</h2>
           <div class="hero-metrics">
             <div class="metric-card">
               <p class="metric-label">問い合わせ一次回答</p>
@@ -66,7 +73,7 @@
             </div>
             <div class="metric-card">
               <p class="metric-label">導入継続率（12か月）</p>
-              <p class="metric-value">94%</p>
+              <p class="metric-value metric-value--positive">94%</p>
             </div>
           </div>
         </aside>
@@ -79,14 +86,23 @@
         <p class="section-copy">利用頻度が高い3領域に絞ってテンプレート化し、導入初日から現場の運用ルールに落とし込みます。まずは既存業務を止めないことを最優先に設計します。</p>
         <div class="feature-grid">
           <article class="feature-card">
+            <div class="feature-card-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+            </div>
             <h3>実行履歴ダッシュボード</h3>
             <p>失敗ジョブ・処理時間・再試行を同一画面で確認。担当者交代時でも引き継げるログ設計を標準化。</p>
           </article>
           <article class="feature-card">
+            <div class="feature-card-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="2"/><circle cx="5" cy="19" r="2"/><circle cx="19" cy="19" r="2"/><path d="M12 7v4M8.5 17.5 12 11l3.5 6.5"/></svg>
+            </div>
             <h3>ワークフロー制御</h3>
             <p>停止・再開・テンプレート変更を業務責任者が実行。承認フロー付きで運用事故を抑制。</p>
           </article>
           <article class="feature-card">
+            <div class="feature-card-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            </div>
             <h3>サポート運用</h3>
             <p>問い合わせ内容をカテゴリ別に管理し、改善依頼から仕様反映までを追跡可能に。</p>
           </article>
@@ -97,9 +113,9 @@
     <section class="section">
       <div class="site-container">
         <div class="band">
-          <h2 class="section-heading" style="color:var(--color-white);">無料30分の業務整理セッションを提供中</h2>
+          <h2 class="section-heading band-heading">無料30分の業務整理セッションを提供中</h2>
           <p>既存フローをそのまま持ち込み、どこまで自動化すべきかを優先度付きで整理します。</p>
-          <div style="margin-top:var(--spacing-6);display:flex;gap:var(--spacing-3);flex-wrap:wrap;">
+          <div class="band-actions">
             <a class="btn btn-primary btn-md" href="support.html">相談を予約する</a>
             <a class="btn btn-secondary btn-md" href="dashboard.html">管理画面デモ</a>
           </div>
