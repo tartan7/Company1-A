@@ -1,8 +1,10 @@
 {
+  "type": "module",
   "scripts": {
     "lint": "echo \"lint ok\"",
     "serve": "npx http-server public -p 8080 -a 127.0.0.1",
-    "test": "bash scripts/smoke-test.sh \"http://127.0.0.1:8080\""
+    "test": "bash scripts/smoke-test.sh \"http://127.0.0.1:8080\"",
+    "test:email": "node --test tests/email.test.js"
   },
   "devDependencies": {
     "http-server": "^14.1.1",
