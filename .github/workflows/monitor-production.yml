@@ -1,6 +1,7 @@
 name: Monitor Production
 
 on:
+<<<<<<< HEAD
   schedule:
     - cron: '*/15 * * * *'
   workflow_dispatch:
@@ -9,6 +10,16 @@ jobs:
   monitor:
     name: Monitor Production
     runs-on: self-hosted
+=======
+  workflow_dispatch:
+  schedule:
+    - cron: "*/30 * * * *"
+
+jobs:
+  monitor:
+    name: Uptime and TLS Checks
+    runs-on: ubuntu-latest
+>>>>>>> it02
     environment: production
 
     steps:
@@ -18,8 +29,23 @@ jobs:
       - name: Validate monitor script
         run: test -x scripts/monitor-production.sh
 
+<<<<<<< HEAD
       - name: Run monitor
         env:
           BASE_URL: ${{ vars.PROD_BASE_URL }}
           ALERT_EMAIL: ${{ vars.ALERT_EMAIL }}
         run: bash scripts/monitor-production.sh
+=======
+      - name: Run production checks
+        env:
+          PROD_BASE_URL: ${{ vars.PROD_BASE_URL }}
+          ALERT_WEBHOOK_URL: ${{ secrets.PROD_ALERT_WEBHOOK_URL }}
+          TLS_MIN_VALID_DAYS: ${{ vars.TLS_MIN_VALID_DAYS }}
+        run: |
+          set -euo pipefail
+          if [ -z "${PROD_BASE_URL:-}" ]; then
+            echo "::warning::PROD_BASE_URL is not set in repository/environment variables; skipping monitor checks."
+            exit 0
+          fi
+          bash scripts/monitor-production.sh "$PROD_BASE_URL"
+>>>>>>> it02
