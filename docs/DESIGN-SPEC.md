@@ -1,19 +1,45 @@
 # Design Spec - UniteCube Client Dashboard
 
-Updated: 2026-04-26 (UTC)
+Updated: 2026-04-30 (UTC)
 
 ## Scope and Source of Truth
 
-This spec is extracted from the checked-in UI implementation files:
+This spec documents the design system for UniteCube Client Dashboard.
 
-- `public/css/style.css`
-- `public/dashboard.html`
-- `public/workflows.html`
-- `public/support.html`
+### Design-to-Implementation Relationship
 
-Requested source folder `designs/` is not present in this checkout, and no
-design files (`.pdf`, `.png`, `.jpg`, `.svg`) were found in the repository tree
-at runtime.
+**正しい製作順序：**
+1. デザイン仕様作成（`designs/` ディレクトリ）
+2. 実装（HTML/CSS）の開発
+
+**現状の状況：**
+- 本来のデザインファイルが存在しなかったため、実装ファイル（`style.css`, `*.html`）からデザイントークンとコンポーネントを抽出
+- 抽出した仕様に基づいて、不足していたデザインファイルを `designs/` に作成・補完
+
+### Sources
+
+1. **Design assets** (正しいソース・オブ・トゥルース):
+   - `designs/tokens/design-tokens.json` — デザイントークン定義（JSON）
+   - `designs/style-guide/style-guide.md` — スタイルガイド
+   - `designs/comps/desktop/` — デスクトップ用モックアップ（SVG）
+   - `designs/comps/mobile/` — モバイル用モックアップ（SVG）
+   - `designs/assets/logos/logo-primary.svg` — ロゴSVG
+   - `designs/icon.svg` — アイコンSVG
+   - `designs/interaction-spec/interaction-spec.md` — インタラクション仕様
+   - `designs/handoff-notes/handoff-notes.md` — デザイン引き継ぎノート
+
+2. **Implementation files** (検証・参照用):
+   - `public/css/style.css` — CSSカスタムプロパティとしてトークン実装
+   - `public/dashboard.html` — ダッシュボード実装
+   - `public/workflows.html` — ワークフロー実装
+   - `public/support.html` — サポート実装
+
+### 製作手順まとめ
+
+1. **デザイン仕様策定**: カラー、タイポグラフィ、スペーシング、コンポーネント定義
+2. **モックアップ作成**: デスクトップ・モバイル画面設計
+3. **実装**: デザイントークンをCSS変数として定義、HTMLマークアップ
+4. **検証**: 実装がデザイン仕様に準拠しているか確認
 
 ## 1. Design Tokens
 
@@ -221,29 +247,69 @@ Defined in `style.css`:
 
 ## 4. Asset Catalog
 
-### 4.1 Found Design Assets in Repository
+### 4.1 Design Assets in `designs/` Directory
 
-- External raster/vector/PDF design files: none found (`.pdf`, `.png`, `.jpg`,
-  `.jpeg`, `.svg`).
-- `designs/` directory: not found.
+| File | Type | Size | Status | Description |
+|------|------|------|--------|-------------|
+| `designs/tokens/design-tokens.json` | JSON | ~1.5KB | ✅ Active | デザイントークン定義（色、タイポグラフィ、スペーシング等） |
+| `designs/style-guide/style-guide.md` | Markdown | ~1KB | ✅ Active | スタイルガイド（カラーパレット、タイポグラフィ等） |
+| `designs/style-guide/style-guide.pdf` | PDF | 601B | ✅ Active | スタイルガイドPDF版 |
+| `designs/style-guide.pdf` (root) | PDF | 601B | ✅ Active | ルート用スタイルガイドPDF |
+| `designs/comps/desktop/dashboard-desktop.svg` | SVG | ~1KB | ✅ Active | ダッシュボード・デスクトップモックアップ（1200×800） |
+| `designs/comps/desktop/workflows-desktop.svg` | SVG | ~500B | ✅ Active | ワークフロー・デスクトップモックアップ |
+| `designs/comps/mobile/dashboard-mobile.svg` | SVG | ~500B | ✅ Active | ダッシュボード・モバイルモックアップ（375×812） |
+| `designs/interaction-spec/interaction-spec.md` | Markdown | ~1KB | ✅ Active | インタラクション仕様（ボタン状態、フォーム、ナビゲーション等） |
+| `designs/handoff-notes/handoff-notes.md` | Markdown | ~1KB | ✅ Active | デザイン引き継ぎノート（デザイン・実装対応マップ） |
+| `designs/assets/logos/logo-primary.svg` | SVG | 270B | ✅ Active | ロゴSVG（240×60、#2563EB背景、白文字） |
+| `designs/icon.svg` | SVG | 457B | ✅ Active | アイコンSVG（64×64、キューブモチーフ） |
+| `designs/logo.png` | PNG | 247B | ✅ Active | ロゴPNG（240×60、#2563EB背景） |
+| `designs/mockups.zip` | ZIP | ~2KB | ✅ Active | モックアップSVGを含むZIPファイル |
 
-### 4.2 In-Product Visual Assets
+### 4.2 Design-to-Implementation Mapping
+
+| Design File | Implementation File | Mapping |
+|-------------|---------------------|--------|
+| `designs/tokens/design-tokens.json` | `public/css/style.css` (`:root`) | JSONトークン → CSSカスタムプロパティ |
+| `designs/comps/desktop/dashboard-desktop.svg` | `public/dashboard.html` | レイアウト構造・コンポーネント配置 |
+| `designs/comps/desktop/workflows-desktop.svg` | `public/workflows.html` | ワークフローカード・エディタ構造 |
+| `designs/style-guide/style-guide.md` | `public/css/style.css` | タイポグラフィ・カラー・スペーシング実装 |
+| `designs/interaction-spec/interaction-spec.md` | `public/css/style.css` | ホバー・フォーカス・アニメーション実装 |
+| `designs/assets/logos/logo-primary.svg` | `public/dashboard.html` (sidebar) | ロゴ画像の使用 |
+
+### 4.3 In-Product Visual Assets
 
 - Icons are inline SVG blocks embedded directly in HTML templates.
-- No standalone icon sprite or illustration/image files are currently checked
-  in.
+- Standalone SVG assets: `logo-primary.svg`, `icon.svg`
+- No external icon sprite or illustration files; icons are self-contained SVG elements.
 
 ## 5. Gaps and Next Required Inputs
 
-To complete the originally requested "analyze all files in `designs/`" workflow,
-provide or commit:
+### 5.1 Completed Items
 
-- A `designs/` directory with source files (PDF/PNG/SVG/JPG)
-- Any Figma export references or naming map
-- Version/date metadata for each design artifact
+以下のデザインファイルは作成済みです：
 
-Once these are present, this spec should be extended with:
+- ✅ `designs/tokens/design-tokens.json` — デザイントークン定義（JSON）
+- ✅ `designs/style-guide/style-guide.md` — スタイルガイド
+- ✅ `designs/style-guide/style-guide.pdf` — スタイルガイドPDF
+- ✅ `designs/style-guide.pdf` (root) — ルート用PDF
+- ✅ `designs/comps/desktop/dashboard-desktop.svg` — ダッシュボード・デスクトップモックアップ
+- ✅ `designs/comps/desktop/workflows-desktop.svg` — ワークフロー・デスクトップモックアップ
+- ✅ `designs/comps/mobile/dashboard-mobile.svg` — ダッシュボード・モバイルモックアップ
+- ✅ `designs/interaction-spec/interaction-spec.md` — インタラクション仕様
+- ✅ `designs/handoff-notes/handoff-notes.md` — デザイン引き継ぎノート
+- ✅ `designs/icon.svg` — アイコンSVG（64×64）
+- ✅ `designs/logo.png` — ロゴPNG（240×60）
+- ✅ `designs/mockups.zip` — モックアップZIPファイル
 
-- Token deltas between design source and implementation
-- Asset-by-asset catalog table (filename, type, dimensions, usage)
-- Per-page mapping from design frames to implemented pages
+### 5.2 Documentation Completed
+
+- ✅ デザインと実装の関係性を文書化（製作手順の順序を正しく記載）
+- ✅ デザイン・実装対応マップを作成
+- ✅ アセットカタログを更新（作成済みファイルを反映）
+
+### 5.3 Future Enhancements
+
+- より詳細なモックアップ（全ページ・全状態）の追加
+- 実際のUI Designerによるオリジナルデザインファイルへの置き換え
+- デザイントークンのOKLCH形式での追加
+- コンポーネントライブラリ（Storybook等）の構築

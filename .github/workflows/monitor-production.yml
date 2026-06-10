@@ -1,0 +1,25 @@
+name: Monitor Production
+
+on:
+  schedule:
+    - cron: '*/15 * * * *'
+  workflow_dispatch:
+
+jobs:
+  monitor:
+    name: Monitor Production
+    runs-on: self-hosted
+    environment: production
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate monitor script
+        run: test -x scripts/monitor-production.sh
+
+      - name: Run monitor
+        env:
+          BASE_URL: ${{ vars.PROD_BASE_URL }}
+          ALERT_EMAIL: ${{ vars.ALERT_EMAIL }}
+        run: bash scripts/monitor-production.sh

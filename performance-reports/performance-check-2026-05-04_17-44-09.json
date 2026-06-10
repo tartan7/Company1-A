@@ -1,0 +1,81 @@
+{
+  "timestamp": "2026-05-04T17:44:09Z",
+  "target": "http://127.0.0.1:8080",
+  "checks": {
+    "load_times": {
+      "home": {
+        "time_namelookup": 0.000014,
+        "time_connect": 0.000105,
+        "time_starttransfer": 0.000795,
+        "time_total": 0.000835,
+        "size_download": 1056,
+        "http_code": 200
+      },
+      "dashboard.html": {
+        "time_namelookup": 0.000023,
+        "time_connect": 0.000098,
+        "time_starttransfer": 0.000591,
+        "time_total": 0.000616,
+        "size_download": 335,
+        "http_code": 404
+      },
+      "workflows.html": {
+        "time_namelookup": 0.000013,
+        "time_connect": 0.000099,
+        "time_starttransfer": 0.000622,
+        "time_total": 0.000644,
+        "size_download": 335,
+        "http_code": 404
+      },
+      "support.html": {
+        "time_namelookup": 0.000017,
+        "time_connect": 0.000091,
+        "time_starttransfer": 0.000550,
+        "time_total": 0.000571,
+        "size_download": 335,
+        "http_code": 404
+      },
+      "industries.html": {
+        "time_namelookup": 0.000014,
+        "time_connect": 0.000090,
+        "time_starttransfer": 0.000533,
+        "time_total": 0.000555,
+        "size_download": 335,
+        "http_code": 404
+      },
+      "insights.html": {
+        "time_namelookup": 0.000013,
+        "time_connect": 0.000097,
+        "time_starttransfer": 0.000545,
+        "time_total": 0.000568,
+        "size_download": 335,
+        "http_code": 404
+      },
+      "solutions.html": {
+        "time_namelookup": 0.000022,
+        "time_connect": 0.000133,
+        "time_starttransfer": 0.000579,
+        "time_total": 0.000605,
+        "size_download": 335,
+        "http_code": 404
+      }
+    },
+    "core_web_vitals_estimate": {
+      "lcp_estimated_ms": 200,
+      "cls_estimated": 0.05,
+      "inp_estimated_ms": 100
+    },
+    "recommendations": [
+      "Enable gzip/brotli compression for text/css, application/javascript, image/svg+xml, application/json",
+      "Implement proper caching headers for static assets (CSS, JS, fonts, images)",
+      "Consider using rel=preload for critical fonts and above-the-fold CSS",
+      "Ensure all images have width and height attributes to prevent CLS",
+      "Use modern image formats (WebP/AVIF) with fallback for browsers that don't support them",
+      "Implement lazy loading for below-the-fold images",
+      "Minify CSS and JavaScript files",
+      "Combine CSS files to reduce HTTP requests",
+      "Defer non-critical JavaScript",
+      "Remove render-blocking resources where possible"
+    ]
+  }
+}

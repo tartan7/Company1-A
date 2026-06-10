@@ -1,0 +1,15 @@
+{
+  "name": "unitecube",
+  "version": "0.1.0",
+  "private": true,
+  "description": "UniteCube documentation and static dashboard assets",
+  "scripts": {
+    "start": "python3 -m http.server 8080",
+    "smoke": "bash scripts/smoke-test.sh ${SMOKE_BASE_URL:-http://localhost:8080}",
+    "monitor": "bash scripts/monitor-production.sh ${MONITOR_BASE_URL:-http://localhost:8080}",
+    "test": "node --test"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
